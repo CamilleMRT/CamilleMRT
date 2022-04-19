@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap');
+:root{
+    --bleu: #323277;
+    --lightblue: rgb(50, 50, 138, 0.445);
+    --orange: rgb(216, 111, 41);  
+
+}
+main{
+    position:absolute !important;
+    top: 23%;
+    left: 20%;
+}
+
+#btnCreate{
+    color: white;
+    background-color: var(--bleu) !important;
+    transition: all 0.3s;
+}
+
+#btnCreate:hover{
+    background-color: var(--lightblue) !important;
+}

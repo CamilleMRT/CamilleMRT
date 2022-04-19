@@ -1,0 +1,10 @@
+.content{
+    position: absolute !important;
+    top: 25%;
+    left: 30%;
+    background-color: #fff;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+

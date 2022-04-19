@@ -1,0 +1,20 @@
+:root{
+    --bleu: #323277;
+    --lightblue: rgb(50, 50, 138, 0.445);
+    --orange: rgb(216, 111, 41);  
+
+}
+
+.text-center, .text-left{
+    color: black !important;
+}
+
+#title{
+    color: white;
+    background-color: var(--bleu) !important;
+}
+
+#subtitle{
+    color: white;
+    background-color: var(--lightblue) !important;
+}
