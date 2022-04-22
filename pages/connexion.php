@@ -79,11 +79,15 @@
 
 
        <!-- Si incorrecte afficher message -->
-
+       <?php
+            if (isset($_SESSION["etatConnexion"]) && $_SESSION["etatConnexion"] == 0) {
+            echo "<p class=\"bg-danger\">Identifiant ou mot de passe incorrect</p>";
+            }
+            ?>
 
        <div class="text-center">
 
-           <a href="index.php?page=mdpoublie" id="mdp" class="text-dark" data-toggle="modal">Mot de passe oublié ?</a>
+           <a href="#" id="mdp" class="text-dark" onclick="redirection()">Mot de passe oublié ?</a>
 
        </div>
 
@@ -91,7 +95,7 @@
 
            <a href="mailto:camillemarante@gmail.com" id="assistance" class="text-dark">Assistance technique</a>
 
-       </div>
+       </div> 
    </div>
    </div>
 
