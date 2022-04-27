@@ -3,7 +3,6 @@
     session_start();
     $page = isset($_GET['page']) ? $_GET['page'] : "connexion";
 
-    /*include('./common/function.php');*/
     // Affichage « de la partie haute » de votre site, commun à l'ensemble de votre site
     include('./common/header.php');
     if ($page != 'connexion') {
@@ -11,12 +10,12 @@
         include ('./common/nav.php');
     }
     // Pages autorisées : whitelist
-    /*include('./whitelist/web.php');*/
+    include('./whitelist/web.php');
     //nav commune à tout le site
-   // if(isset($_GET['page'])) {
-     //   include('./common/nav.php'); 
+    if(isset($_GET['page'])) {
+    include('./common/nav.php'); 
 
-    //}
+    }
 
 
     // Gestion accès accueil
@@ -29,3 +28,4 @@
     include('./common/footer.php'); 
     ?>
 
+    
