@@ -75,7 +75,7 @@ if(isset($_POST['etape1'])){
                     <div class="col-sm-12 col-md-6 ">
                         <p class="text-left m-0">Secteur formation</p>
                         <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="custom-select"
-                            id="" name="id_secteur_formation" required>
+                            id="" name="ID_SECTEUR_FORMATION" required>
 
                             <option selected>Choix</option>
                             <?php 
@@ -86,7 +86,7 @@ if(isset($_POST['etape1'])){
                             <option value="<?php echo $groupes_formation["ID_SECTEUR_FORMATION"]?>">
                                 <?php echo $groupes_formation["secteur_formation"]?></option>
                             <?php } ?>
-                        </select>
+                        </select> 
                     </div>
                 </div>
 
@@ -219,14 +219,14 @@ if(isset($_POST['etape1'])){
                     <div class="col-sm-12 col-md-4">
                         <p class="text-left">Modalités examens (pour BTS/Bac/CAP)
                             <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
-                                name="id_modalites_examen" class="form-control" required>
+                                name="id_modalites_examens" class="form-control" required>
                                 <option selected>Choix</option>
                                 <?php
                         $resultsModalite=getlistModalites($pdo);
                         foreach ($resultsModalite as $modalite){
 
                         ?>
-                                <option value="<?php echo $modalite["ID_MODALITES_EXAMEN"]?>">
+                                <option value="<?php echo $modalite["ID_MODALITES_EXAMENS"]?>">
                                     <?php echo $modalite["modalite_examen"]?></option>
                                 <?php } ?>
                             </select>
