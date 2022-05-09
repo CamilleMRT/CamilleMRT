@@ -161,6 +161,9 @@ function getlistAssForm($pdoP)
 
 
 // *********** PARTIE COORDO ************
+if(@$_POST['etape3']){
+    $idFiche=completeActionCoordo($pdo, $_POST);
+}  
 
 function completeActionCoordo($pdoP, $values)
 {
@@ -242,25 +245,28 @@ if (@$_GET['supprimer']) {
 // GESTION DU MOT DE PASSE OUBLIE
 
 //fonction qui renvoie l'id de l'utilisateur et son email
-function getMail($pdoP, $userNameP){
-    $stmt = $pdoP->prepare("SELECT mail_util from utilisateurs WHERE ident_util=?");
-    $stmt->execute([$userNameP]);
+function getMail($pdoP, $emailP){
+    $stmt = $pdoP->prepare("SELECT email from utilisateursgreta WHERE email = ?");
+    $stmt->execute([$emailP]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['mail_util'];
+    if($result){
+        return $result['email'];
+    }
+    return false;
 }
 
 //fonction qui met à jour pour un identifiant donné la date du jeton et la valeur du jeton
 //pour une réinitialisation du mot de passe
-function updateToken($pdoP, $tokenP, $userNameP) {
+function updateToken($pdoP, $tokenP, $emailP) {
     //ATTENTION l'identifiant doit être unique
-    $stmt = $pdoP->prepare("UPDATE utilisateurs SET pwd_change_date=NOW(), pwd_change_token=? WHERE ident_util=?");
-    $stmt->execute([$tokenP, $userNameP]);
+    $stmt = $pdoP->prepare("UPDATE utilisateursgreta SET pwd_change_date=NOW(), pwd_change_token=? WHERE email =?");
+    $stmt->execute([$tokenP, $emailP]);
 }
 
 //fonction qui renvoie les infos spécifiques à un jeton passé en paramètre
 function getInfosToken($pdoP, $tokenP){
     //ATTENTION l'identifiant doit être unique
-    $stmt = $pdoP->prepare("SELECT pwd_change_date, ident_util FROM utilisateurs WHERE pwd_change_token=?");
+    $stmt = $pdoP->prepare("SELECT pwd_change_date, id_util FROM utilisateursgreta WHERE pwd_change_token=?");
     $stmt->execute([$tokenP]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -268,9 +274,9 @@ function getInfosToken($pdoP, $tokenP){
 //fonction qui modifie le mot de passe et enlève les infos concernant le token
 function reinitPwd($pdoP, $values) {
     //ATTENTION l'identifiant doit être unique
-    $username = htmlspecialchars($values['username']);
+    $email = htmlspecialchars($values['email']);
     $pwd = htmlspecialchars($values['pwd']);
     $pwdHash = password_hash($pwd, PASSWORD_DEFAULT);
-    $stmt = $pdoP->prepare("UPDATE utilisateurs SET pwd_change_date=NULL, pwd_change_token=NULL, pwd_util=?   WHERE ident_util=?");
-    $stmt->execute([$pwdHash, $username]);
+    $stmt = $pdoP->prepare("UPDATE utilisateursgreta SET pwd_change_date=NULL, pwd_change_token=NULL, pwd=?   WHERE email =?");
+    $stmt->execute([$pwdHash, $email]);
 }

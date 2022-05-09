@@ -43,7 +43,7 @@
             <div class="container">
                 <div class="table-responsive mt-5">
                     <div class="row col-md-12 col-md-offset-2 custyle">
-                        <table class="table table-hover table-sm text-center">
+                        <table class="table table-hover table-sm text-center" id="listeformation">
                             <thead>
                                 <tr>
                                     <th>N° action</th>
@@ -89,11 +89,18 @@
                     </div>
                 </div>
             </div>
+            <script>
+$(document).ready(function() {
+    $('#listeformation').DataTable();
+});
 
+
+</script>
             <!-- CALENDRIER FORMATION GANTT -->
             <div class="card m-5" id="calendar">
                 <h5 class="titreform">Calendrier des Formations</h5>
             </div>
+            <p>EN COURS DE CONSTRUCTION</p>
         </div>
 
 

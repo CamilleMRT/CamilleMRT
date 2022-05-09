@@ -8,9 +8,7 @@
     $stmt = $pdo->prepare("SELECT * FROM utilisateursgreta WHERE email=?");
     $stmt->execute([$username]);    
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
     if ($result) {
-        
         //il y a un résultat donc l'utilisateur existe, maintenant vérification du mot de passe
         $pwdHashBD = $result['pwd'];
         // récupération valeurs permettant de gérer le mode echec 
@@ -29,8 +27,8 @@
             $_SESSION["id_util"] = $result['id_util'];
             $_SESSION["groupe"] = $result['groupe'];
             //redirection vers la page d'accueil
-            header('Location: index.php?page=accueil');
-            die();
+          header('Location: index.php?page=accueil');
+          die();
 
         } else {
             //mot de passe incorrecte
@@ -38,7 +36,7 @@
             //et donc d'afficher un message d'echec sur la page d'authentification
             $_SESSION["etatConnexion"] = "0";
             header('Location: index.php?page=connexion');
-            die();
+           die();
         }
     
     } else {

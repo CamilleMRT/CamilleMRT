@@ -2,7 +2,7 @@
 
 function isAdmin()
 {
-    return $_SESSION['groupe'] == 'ADMIN';
+    return @$_SESSION['groupe'] == 'ADMIN';
 }
 
 function isDirection()

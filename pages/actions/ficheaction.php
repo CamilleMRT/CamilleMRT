@@ -86,7 +86,7 @@ if(isset($_POST['etape1'])){
                             <option value="<?php echo $groupes_formation["ID_SECTEUR_FORMATION"]?>">
                                 <?php echo $groupes_formation["secteur_formation"]?></option>
                             <?php } ?>
-                        </select> 
+                        </select>
                     </div>
                 </div>
 
@@ -262,28 +262,28 @@ if(isset($_POST['etape1'])){
                         </p>
                     </div>
                 </div>
-    </div>
+            </div>
 
-    <!-- Commentaire -->
-    <div class="row m-2">
-        <div class="col-12">
-            <p class="text-left">Commentaire</p>
-            <textarea <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="form-control"
-                rows="2"></textarea>
-        </div>
-    </div>
+            <!-- Commentaire -->
+            <div class="row m-2">
+                <div class="col-12">
+                    <p class="text-left">Commentaire</p>
+                    <textarea <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="form-control"
+                        rows="2"></textarea>
+                </div>
+            </div>
 
-    <?php
+            <?php
 
             if(isAdmin() || isDirection() || isCFP()){
         ?>
 
-    <!-- Boutons -->
-    <div class="row justify-content-center">
-        <div class="m-3">
-            <input type="submit" name="etape1" class="btn btn-success" value="Valider">
-        </div>
-    </div>
+            <!-- Boutons -->
+            <div class="row justify-content-center">
+                <div class="m-3">
+                    <input type="submit" name="etape1" class="btn btn-success" value="Valider">
+                </div>
+            </div>
 
     </div>
     <?php
@@ -358,201 +358,328 @@ if(isset($_POST['etape1'])){
                     ?>
         </div>
     </form>
+
     <!-- ******** 3eme partie - Coordonnateur ******** -->
-
-    <!-- Titre centre -->
-    <div class="card m-5 text-center bg-light">
-
-        <div class="card m-5 p-2 text-center" id="subtitle">
-
-            <h5>Partie à remplir par le/la coordonnateur(trice)</h5>
-        </div>
-        <!-- Nom de l'intervenant -->
-        <div class="row m-2">
-            <div class="col-sm-12 col-md-4 ">
-                <p class="text-left"> Nom de l'intervenant(e)
-                    <select <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> name="??????"
-                        class="form-control" required>
-                        <option selected>Choix</option>
-                        <?php
-                        $resultsIntervenant=getlistInter($pdo);
-                        foreach ($resultsIntervenant as $intervenant){
-                            
-                            ?>
-                        <option value="<?php echo $intervenant["id_util"]?>">
-                            <?php echo "{$intervenant['nom']} {$intervenant['prenom']}"?></option>
-                        <?php } ?>
-                    </select>
-                </p>
-            </div>
-
-            <!-- Catégorie -->
-            <div class="col-sm-12 col-md-4">
-                <p class="text-left">Catégorie
-                    <select <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="form-control"
-                        name="cat_intervenant" required>
-                        <option selected>Choix</option>
-                        <?php
-                        $resultsCatInter=getlistCatInter($pdo);
-                        foreach ($resultsCatInter as $catinter){
-
-                        ?>
-                        <option value="<?php echo $catinter["ID_CAT_INTER"]?>">
-                            <?php echo $catinter["cat_intervenant"]?></option>
-                        <?php } ?>
-                    </select>
-                </p>
-            </div>
-
-            <!-- Type heures-->
-            <div class="col-sm-12 col-md-4">
-                <p class="text-left">Type heures
-                    <select <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="form-control"
-                        name="type_heure_inter" required>
-                        <option selected>Choix</option>
-                        <?php
-                        $resultsHeuresInter=getlistType($pdo);
-                        foreach ($resultsHeuresInter as $typeHeure){
-                        ?>
-                        <option value="<?php echo $typeHeure["ID_TYPEHEURES_INTER"]?>">
-                            <?php echo $typeHeure["type_heure_inter"]?></option>
-                        <?php } ?>
-                    </select>
-                </p>
-            </div>
-        </div>
-
-        <!-- Nature des heures -->
-        <div class="row m-2">
-            <div class="col-sm-12 col-md-4 ">
-                <p class="text-left"> Nature des heures
-                    <input <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="text"
-                        class="form-control" value="" name="" required>
-                </p>
-            </div>
-
-            <!-- Nombre d'heures = à calculer automatiquement via le calendrier API -->
-            <div class="col-sm-12 col-md-4 ">
-                <p class="text-left"> Nombre d'heures
-                    <input <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
-                        class="form-control" placeholder="Calcul auto" readonly value="" name="" required>
-                </p>
-            </div>
-
-            <!-- Tarif -->
-            <div class="col-sm-12 col-md-4 ">
-                <p class="text-left"> Tarif
-                    <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
-                        class="form-control" value="" name="" />
-                </p>
-            </div>
-        </div>
-
-        <?php
-                             if(isAdmin() || isDirection() || isCoordo()){
-                            ?>
-
-        <!-- Bouton ajouter ligne intervenant  -->
-        <div class="button text-center mt-3">
-            <button type="button" class="btn btn-warning btn-sm">Ajouter un intervenant</button>
-        </div>
-
-        <?php
-         }
-        ?>
-
-        <!-- Commentaire -->
-        <div class="row m-2">
-            <div class="col-12">
-                <div class="form-group text-left">
-                    <p class="text-left">Commentaire</p>
-                    <textarea <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="form-control"
-                        id="exampleFormControlTextarea1" rows="2"></textarea>
-                </div>
-            </div>
-        </div>
-
-
-        <?php
-        if(isAdmin() || isDirection() || isCoordo()){
-        ?>
-
-        <!-- Boutons -->
-        <div class="row justify-content-center">
-            <div class="m-3">
-                <button type="button" name="register-submit" class="btn btn-success">Valider</button>
-            </div>
-        </div>
-    </div>
-    <?php
-    }
-    ?>
-
-    <!-- ******** 4eme partie - Service Gestion ******** -->
-
-    <div class="card m-5 text-center bg-light">
+    <form id="formCoordo" action="index.php?page=actions/ficheaction" method="POST">
 
         <!-- Titre centre -->
-        <div class="card m-5 p-2 text-center" id="subtitle">
-            <h5>Partie à remplir par le service gestion</h5>
-        </div>
+        <div class="card m-5 text-center bg-light">
 
-        <!-- Numéro d'action -->
-        <div class="row m-2">
-            <div class="col-sm-12 col-md-4 ">
-                <p class="text-left"> Numéro d'action
-                    <input <?=(isServiceGestion() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
-                        class="form-control" value="" name="" required>
-                </p>
+            <div class="card m-5 p-2 text-center" id="subtitle">
+
+                <h5>Partie à remplir par le/la coordonnateur(trice)</h5>
+            </div>
+            <div id="listeinter">
+                <div id="coordo1">
+
+                    <!-- Nom de l'intervenant -->
+                    <div class="row m-2">
+                        <div class="col-sm-12 col-md-4 ">
+                            <p class="text-left"> Nom de l'intervenant(e)
+                                <select <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> id="nomInter"
+                                    name="??????" class="form-control" required>
+                                    <option selected>Choix</option>
+                                    <?php
+                            $resultsIntervenant=getlistInter($pdo);
+                            foreach ($resultsIntervenant as $intervenant){
+                                
+                                ?>
+                                    <option value="<?php echo $intervenant["id_util"]?>">
+                                        <?php echo "{$intervenant['nom']} {$intervenant['prenom']}"?></option>
+                                    <?php } ?>
+                                </select>
+                            </p>
+                        </div>
+
+                        <!-- Catégorie -->
+                        <div class="col-sm-12 col-md-4">
+                            <p class="text-left">Catégorie
+                                <select <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> id="catInter"
+                                    class="form-control" name="cat_intervenant" required>
+                                    <option selected>Choix</option>
+                                    <?php
+                            $resultsCatInter=getlistCatInter($pdo);
+                            foreach ($resultsCatInter as $catinter){
+    
+                            ?>
+                                    <option value="<?php echo $catinter["ID_CAT_INTER"]?>">
+                                        <?php echo $catinter["cat_intervenant"]?></option>
+                                    <?php } ?>
+                                </select>
+                            </p>
+                        </div>
+
+                        <!-- Type heures-->
+                        <div class="col-sm-12 col-md-4">
+                            <p class="text-left">Type heures
+                                <select <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
+                                    class="form-control" id="heuresInter" name="type_heure_inter" required>
+                                    <option selected>Choix</option>
+                                    <?php
+                            $resultsHeuresInter=getlistType($pdo);
+                            foreach ($resultsHeuresInter as $typeHeure){
+                            ?>
+                                    <option value="<?php echo $typeHeure["ID_TYPEHEURES_INTER"]?>">
+                                        <?php echo $typeHeure["type_heure_inter"]?></option>
+                                    <?php } ?>
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Nature des heures -->
+                    <div id="coordobis" class="row m-2">
+                        <div class="col-sm-12 col-md-4 ">
+                            <p class="text-left"> Nature des heures
+                                <input <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="text"
+                                    id="typeheuresInter" class="form-control" value="" name="" required>
+                            </p>
+                        </div>
+
+                        <!-- Nombre d'heures = à calculer automatiquement via le calendrier API -->
+                        <div class="col-sm-12 col-md-4 ">
+                            <p class="text-left"> Nombre d'heures
+                                <input <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
+                                    class="form-control" id="nbheuresInter" placeholder="Calcul auto" readonly value=""
+                                    name="" required>
+                            </p>
+                        </div>
+
+                        <!-- Tarif -->
+                        <div class="col-sm-12 col-md-4 ">
+                            <p class="text-left"> Tarif
+                                <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
+                                    class="form-control" id="tarif" value="" name="" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+                if(isAdmin() || isDirection() || isCoordo()){?>
+
+            <!-- Bouton ajouter ligne intervenant  -->
+
+            <div class="button text-center mt-3">
+                <button type="button" id="ajouter" class="btn btn-warning btn-sm">Ajouter un intervenant</button>
             </div>
 
-            <!-- Code PROGRE -->
-            <div class="col-sm-12 col-md-4 ">
-                <p class="text-left"> Code PROGRE
-                    <input <?=(isServiceGestion() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
-                        class="form-control" value="" name="" required>
-                </p>
+            <?php }?>
+
+            <!-- SCRIPT JQUERY POUR DUPLIQUER LE FORMULAIRE -->
+
+
+            <script>
+            $(document).ready(function() {
+                const nbchildren = $("#listeinter").children().length;
+                $("#ajouter").click(function(e) {
+                    e.preventDefault();
+                    $("#listeinter").append(`       
+                   
+                    <!-- Nom de l'intervenant -->
+                    <div id="coordo${nbchildren+1}">
+
+                <div class="row m-2">
+                    <div class="col-sm-12 col-md-4 ">
+                        <p class="text-left"> Nom de l'intervenant(e)
+                            <select id="nomInter" name="??????" class="form-control" required>
+                                <option selected>Choix</option>
+                                <?php
+                            $resultsIntervenant=getlistInter($pdo);
+                            foreach ($resultsIntervenant as $intervenant){
+                                
+                                ?>
+                                <option value="<?php echo $intervenant["id_util"]?>">
+                                    <?php echo "{$intervenant['nom']} {$intervenant['prenom']}"?></option>
+                                <?php } ?>
+                            </select>
+                        </p>
+                    </div>
+                    <!-- Catégorie -->
+                    <div class="col-sm-12 col-md-4">
+                        <p class="text-left">Catégorie
+                            <select id="catInter" class="form-control" name="cat_intervenant" required>
+                                <option selected>Choix</option>
+                                <?php
+                            $resultsCatInter=getlistCatInter($pdo);
+                            foreach ($resultsCatInter as $catinter){
+    
+                            ?>
+                                <option value="<?php echo $catinter["ID_CAT_INTER"]?>">
+                                    <?php echo $catinter["cat_intervenant"]?></option>
+                                <?php } ?>
+                            </select>
+                        </p>
+                    </div>
+                    <!-- Type heures-->
+                    <div class="col-sm-12 col-md-4">
+                        <p class="text-left">Type heures
+                            <select class="form-control" id="heuresInter" name="type_heure_inter" required>
+                                <option selected>Choix</option>
+                                <?php
+                            $resultsHeuresInter=getlistType($pdo);
+                            foreach ($resultsHeuresInter as $typeHeure){
+                            ?>
+                                <option value="<?php echo $typeHeure["ID_TYPEHEURES_INTER"]?>">
+                                    <?php echo $typeHeure["type_heure_inter"]?></option>
+                                <?php } ?>
+                            </select>
+                        </p>
+                    </div>
+                </div>
+                <!-- Nature des heures -->
+                <div id="coordobis" class="row m-2">
+                    <div class="col-sm-12 col-md-4 ">
+                        <p class="text-left"> Nature des heures
+                            <input type="text" id="typeheuresInter" class="form-control" value="" name="" required>
+                        </p>
+                    </div>
+                    <!-- Nombre d'heures = à calculer automatiquement via le calendrier API -->
+                    <div class="col-sm-12 col-md-4 ">
+                        <p class="text-left"> Nombre d'heures
+                            <input type="number" class="form-control" id="nbheuresInter" placeholder="Calcul auto" readonly value=""
+                                name="" required>
+                        </p>
+                    </div>
+                    <!-- Tarif -->
+                    <div class="col-sm-12 col-md-4 ">
+                        <p class="text-left"> Tarif
+                            <input type="number" class="form-control" id="tarif" value="" name="">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Bouton ajouter ligne intervenant  -->
+            <div class="button text-center mt-3">
+                <button type="button" id="supprimer" class="btn btn-danger btn-sm">Supprimer</button>
+            </div>
+            </div>`)
+
+
+                });
+                $(document).on('click', '#supprimer', function() {
+                    const nbchildren = $("#listeinter").children().length;
+                    console.log($("#coordo" + nbchildren-1))
+                    $("#coordo" + nbchildren-1).remove();
+                    // $(row).remove();
+                });
+
+
+
+
+                // Requête AJAX pour insérer en BDD
+                $("#formcoordo").submit(function(e) {
+                    e.preventDefault();
+                    $("register-submit").val('Enregistrement...');
+                    $.ajax({
+                        url: 'functions/actions.php',
+                        method: 'post',
+                        data: $(this).serialize,
+                        success: function(response) {
+                            console.log(response);
+                        }
+                    })
+                });
+            });
+            
+            </script>
+
+
+
+            <!-- Commentaire -->
+            <div class="row m-2">
+                <div class="col-12">
+                    <div class="form-group text-left">
+                        <p class="text-left">Commentaire</p>
+                        <textarea <?=(isCoordo() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
+                            class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
             </div>
 
-            <!-- Nombre de semaine -->
-            <div class="col-sm-12 col-md-4 ">
-                <p class="text-left"> Nombre de semaine
-                    <input <?=(isServiceGestion() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
-                        class="form-control" placeholder="Calcul auto" readonly value="" name="" required>
-                </p>
-            </div>
-        </div>
 
-        <!-- Commentaire -->
-        <div class="row m-2">
-            <div class="col-12">
-                <div class="form-group text-left">
-                    <p class="text-left">Commentaire</p>
-                    <textarea <?=(isServiceGestion() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
-                        class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+            <?php
+        if(isAdmin() || isDirection() || isCoordo()){
+            ?>
+
+            <!-- Boutons -->
+            <div class="row justify-content-center">
+                <div class="m-3">
+                    <button type="button" name="register-submit" class="btn btn-success">Valider</button>
                 </div>
             </div>
         </div>
-
         <?php
-                             if(isServiceGestion() || isDirection() || isAdmin() || isCFP()){
-                            ?>
+    }
+    ?>
+    </form>
 
-        <!-- Boutons -->
-        <div class="row justify-content-center">
-            <div class="m-3">
-                <button type="button" name="register-submit" class="btn btn-success">Valider</button>
+    <!-- ******** 4eme partie - Service Gestion ******** -->
+    <form>
+
+        <div class="card m-5 text-center bg-light">
+
+            <!-- Titre centre -->
+            <div class="card m-5 p-2 text-center" id="subtitle">
+                <h5>Partie à remplir par le service gestion</h5>
+            </div>
+
+            <!-- Numéro d'action -->
+            <div class="row m-2">
+                <div class="col-sm-12 col-md-4 ">
+                    <p class="text-left"> Numéro d'action
+                        <input <?=(isServiceGestion() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
+                            class="form-control" value="" name="" required>
+                    </p>
+                </div>
+
+                <!-- Code PROGRE -->
+                <div class="col-sm-12 col-md-4 ">
+                    <p class="text-left"> Code PROGRE
+                        <input <?=(isServiceGestion() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
+                            class="form-control" value="" name="" required>
+                    </p>
+                </div>
+
+                <!-- Nombre de semaine -->
+                <div class="col-sm-12 col-md-4 ">
+                    <p class="text-left"> Nombre de semaine
+                        <input <?=(isServiceGestion() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="number"
+                            class="form-control" placeholder="Calcul auto" readonly value="" name="" required>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Commentaire -->
+            <div class="row m-2">
+                <div class="col-12">
+                    <div class="form-group text-left">
+                        <p class="text-left">Commentaire</p>
+                        <textarea <?=(isServiceGestion() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
+                            class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+                    </div>
+                </div>
             </div>
 
             <?php
+                             if(isServiceGestion() || isDirection() || isAdmin() || isCFP()){
+                            ?>
+
+            <!-- Boutons -->
+            <div class="row justify-content-center">
+                <div class="m-3">
+                    <button type="button" name="register-submit" class="btn btn-success">Valider</button>
+                </div>
+
+                <?php
                              }
                         ?>
-            <div class="m-3">
-                <button type="button" class="btn btn-info">Imprimer</button>
-            </div>
+                <div class="m-3">
+                    <button type="button" class="btn btn-info">Imprimer</button>
+                </div>
 
-        </div>
-        </form>
+            </div>
+    </form>
 </main>
 
 <!-- Faire calendrier de formation via une API ?-->

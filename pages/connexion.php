@@ -75,28 +75,27 @@
                    </div>
                </div>
            </div>
+
+           <!-- Si incorrecte afficher message -->
+
+           <div class="text-center">
+
+               <script>
+               function redirection() {
+                   const email = $('#emailco').val();
+                   window.location.href = "index.php?page=mdpoublie&email=" + email;
+               }
+               </script>
+
+               <a href="#" id="mdp" class="text-dark" onclick="redirection()">Mot de passe oublié ?</a>
+
+           </div>
+
+           <div class="text-center">
+
+               <a onclick="window.location.href='mailto:camillemarante@gmail.com'" id="assistance" class="text-dark">Assistance technique</a>
+
        </form>
-
-
-       <!-- Si incorrecte afficher message -->
-       <?php
-            if (isset($_SESSION["etatConnexion"]) && $_SESSION["etatConnexion"] == 0) {
-            echo "<p class=\"bg-danger\">Identifiant ou mot de passe incorrect</p>";
-            }
-            ?>
-
-       <div class="text-center">
-
-           <a href="#" id="mdp" class="text-dark" onclick="redirection()">Mot de passe oublié ?</a>
-
-       </div>
-
-       <div class="text-center">
-
-           <a href="mailto:camillemarante@gmail.com" id="assistance" class="text-dark">Assistance technique</a>
-
-       </div> 
-   </div>
    </div>
 
-   </div>
+

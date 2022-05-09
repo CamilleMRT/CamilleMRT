@@ -1,7 +1,7 @@
 <?php
 ob_start();
 
-include('./functions/utilisateurs.php');
+
 
 ?>
 
@@ -33,7 +33,7 @@ include('./functions/utilisateurs.php');
                     <a href="index.php?page=reservation"><i class="fa-regular fa-calendar-days"></i> Réservations</a>
                 </li>
 
-                <?php if (isAdmin()) {?>
+             <?php if (isAdmin()) {?>
 
                 <li>
                     <a class="gestionutil" href="index.php?page=admin/profilutil">Gestion utilisateurs</a>
