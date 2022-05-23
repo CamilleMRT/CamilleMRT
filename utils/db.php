@@ -3,7 +3,7 @@
 $server = "localhost";
 $db = "projetgretacfa49";
 $user = "admin";
-$password = "admin";
+$password = "tS*GrEmR$8f/nvt";
 // Fin de la déclaration des paramètres
 
 // Cette partie est générique à l'ensemble de vos projets utilisant une base de données.
