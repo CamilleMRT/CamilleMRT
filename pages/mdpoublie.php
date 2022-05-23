@@ -4,7 +4,7 @@ include('./utils/db.php');
 
 //chargement des fonctions liées à la manipulation des données utilisateur
 //include('./functions/utilisateurs.php');
-include('./functions/actions.php');
+include('./functions/actionsGestionConnexion.php');
 
 if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son changement de mot de passe
     reinitPwd($pdo, $_POST);

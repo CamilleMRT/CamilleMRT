@@ -17,7 +17,10 @@
     // Gestion de l'affichage de la page demandée
     if (in_array($page, $whitelist)){
         include("pages/" . $page . '.php');
+    }else{
+        include('./pages/accueil.php');
     }
+    
 
     
     // Affichage de la partie basse de votre site, commun à l'ensemble de votre site. 

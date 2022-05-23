@@ -2,30 +2,12 @@
 include('functions/actions.php');
 include ('utils/db.php');
 
-/* ESSAI ETAT FICHE ACTION
-$statement=$pdo->prepare('SELECT * FROM etat');
-$statement->execute();
-$etatFormulaire=$statement->fetchAll(PDO::FETCH_ASSOC);
-
-
-if(isset($_POST['etape1'])){
-
-    $stmt=$pdo->prepare('INSERT INTO formations(intitule_formation, datevalidation_formation, datedebut_formation, datefin_formation
-    , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, etat VALUES (?,?,?,?,?,?,?,?,1))');
-    $stmt->execute([$_POST['intitule_formation'], $_POST['datevalidation_formation'], $_POST['datedebut_formation'], $_POST['datefin_formation'],
-    $_POST['cfp_ref_formation'],$_POST['niveau_formation'],$_POST[' datedebut_examen_formation'],$_POST['datefin_examen_formation']]);
-
-}else{
-
-    echo "ERREUR";
-}*/
-//CONFIG BOUTON VALIDER POUR ENVOYER EN BDD PARTIE CFP
-if(@$_POST['etape1']){
-    try {
-    $idFiche=createAction($pdo, $_POST);
-    $email=getEmailResponsableSite($pdo, $_POST['id_site_formation']);
-    } catch (PDOException $e) {
-    echo($e);
+$action = getAction($pdo, $_GET['id_action']);
+// ACCES AUX MODIFICATION DES ETAPES
+if (isset ($_POST ['modif'])){
+    $etat=$_POST['etat'];
+    if ($etat==2){
+        
     }
 }
 ?>
@@ -35,10 +17,11 @@ if(@$_POST['etape1']){
 <main role="main" class="col-md-9 ml-sm-auto">
     <div class="card m-5 text-center bg-light">
         <div class="card-header" id="title">
-            <h3>Créer une fiche action </h3>
+            <h3>Modifier une fiche action </h3>
         </div>
         <br>
         <form action="index.php?page=actions/ficheaction" method="POST">
+            <input type='hidden' value='<?php echo $action['etat']?>' name='etat'>
 
             <div class="card m-3 p-2 text-center" id="subtitle">
                 <h5>Partie à remplir par le/la CFP</h5>
@@ -52,7 +35,7 @@ if(@$_POST['etape1']){
                         <p class="text-left m-0">Intitulé de la formation</p>
 
                         <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type='text'
-                            class='form-control' name='intitule_formation' required>
+                            class='form-control' name='intitule_formation' value='<?php echo $action['intitule_formation']?>' required>
                     </div>
 
                     <br>
@@ -60,7 +43,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-6 ">
                         <p class="text-left m-0">Secteur formation</p>
                         <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="custom-select"
-                            id="" name="ID_SECTEUR_FORMATION" required>
+                            id="" name="ID_SECTEUR_FORMATION" value='<?php echo $action['ID_SECTEUR_FORMATION']?>'required>
 
                             <option selected>Choix</option>
                             <?php 
@@ -80,7 +63,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-4 mt-4">
                         <p class="text-left">CFP référent(e)
                             <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
-                                name="cfp_ref_formation" class="form-control" required>
+                                name="cfp_ref_formation" class="form-control" value='<?php echo $action['cfp_ref_formation']?>'required>
                                 <option selected>Choix</option>
                                 <?php
                         $resultsCFP=getlistCFP($pdo);
@@ -100,8 +83,8 @@ if(@$_POST['etape1']){
                         <p class="text-left"> Date de validation de l'action par le Directeur
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php if(count($resultAction)>0) echo $resultAction['date_validation_formation'] ?>"
-                                name="datevalidation_formation" required />
+                                value="<?php echo $resultAction['datevalidation_formation'] ?>"
+                                name="datevalidation_formation" value='<?php echo $action['datevalidation_formation']?>' required />
                         </p>
                     </div>
 
@@ -111,7 +94,7 @@ if(@$_POST['etape1']){
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
                                 value="<?php if(count($resultAction)>0) echo $resultAction['datedebut_formation'] ?>"
-                                name="datedebut_formation" required>
+                                name="datedebut_formation" value='<?php echo $action['datedebut_formation']?>'required>
                         </p>
                     </div>
                 </div>
@@ -123,7 +106,7 @@ if(@$_POST['etape1']){
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
                                 value="<?php if(count($resultAction)>0) echo $resultAction['datefin_formation'] ?>"
-                                name="datefin_formation" required />
+                                name="datefin_formation" value='<?php echo $action['datefin_formation']?>'required />
                         </p>
                     </div>
 
@@ -131,7 +114,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-4 mt-4">
                         <p class="text-left m-0">Niveau RNCP</p>
                         <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="custom-select"
-                            name="niveau_formation">
+                            name="niveau_formation" value='<?php echo $action['niveau_formation']?>'>
 
                             <option selected>Choix</option>
                             <?php 
@@ -151,7 +134,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-4 mt-4 ">
                         <p class="text-left m-0"> Site de réalisation principal </p>
                         <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="custom-select"
-                            name="id_site_formation" required>
+                            name="id_site_formation" value='<?php echo $action['id_site_formation']?>' required>
                             <option selected>Choix</option>
                             <?php 
                         $resultsSite=getlistSite($pdo);
@@ -170,7 +153,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-4 mt-4 ">
                         <p class="text-left m-0"> Site de réalisation secondaire </p>
                         <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> class="custom-select"
-                            name="id_site_secondaire" required>
+                            name="id_site_secondaire" value='<?php echo $action['id_site_secondaire']?>' required>
                             <option selected>Choix</option>
                             <?php 
                         $resultsSiteBis=getlistSiteBis($pdo);
@@ -187,7 +170,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-4 mt-4">
                         <p class="text-left">Parcours
                             <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> name="id_parcours"
-                                class="form-control" required>
+                                class="form-control" value='<?php echo $action['id_parcours']?>' required>
                                 <option selected>Choix</option>
                                 <?php
                         $resultsParcours=getlistParcours($pdo);
@@ -204,7 +187,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-4">
                         <p class="text-left">Modalités examens (pour BTS/Bac/CAP)
                             <select <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
-                                name="id_modalites_examen" class="form-control" required>
+                                name="id_modalites_examen" class="form-control" value='<?php echo $action['id_modalites_examen']?>' required>
                                 <option selected>Choix</option>
                                 <?php
                         $resultsModalite=getlistModalites($pdo);
@@ -224,7 +207,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-4">
                         <p class="text-left m-0">Date de début examen</p>
                         <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
-                            class="form-control" value="" name="datedebut_examen_formation" required>
+                            class="form-control" name="datedebut_examen_formation" value='<?php echo $action['datedebut_examen_formation']?>' required>
                     </div>
 
                     <!-- Checkbox validation -->
@@ -232,7 +215,7 @@ if(@$_POST['etape1']){
                         <div class="form-check text-left">
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
                                 class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault" name="dispense_formation">
+                            <label class="form-check-label" for="flexCheckDefault" name="dispense_formation" value='<?php echo $action['dispense_formation']?>'>
                                 Validation des dispenses par le rectorat <br>
                                 (si parcours Intégration)
                             </label>
@@ -243,7 +226,7 @@ if(@$_POST['etape1']){
                     <div class="col-sm-12 col-md-4 ">
                         <p class="text-left">Date de fin examen
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
-                                class="form-control" value="" name="datefin_examen_formation" required>
+                                class="form-control" name="datefin_examen_formation" value='<?php echo $action['datefin_examen_formation']?>'required>
                         </p>
                     </div>
                 </div>
@@ -266,7 +249,7 @@ if(@$_POST['etape1']){
             <!-- Boutons -->
             <div class="row justify-content-center">
                 <div class="m-3">
-                    <input type="submit" onclick="sendForm" name="etape1" class="btn btn-success" value="Valider">
+                    <input type="submit" onclick="sendForm" name="modif" class="btn btn-success" value="Valider les modifications">
                 </div>
             </div>
 

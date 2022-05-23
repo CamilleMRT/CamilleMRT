@@ -49,10 +49,8 @@
                                     <th>N° action</th>
                                     <th>Secteur</th>
                                     <th>Intitulé</th>
-                                    <th>Niveau</th>
-                                    <th>Parcours</th>
-                                    <th>Lieu principal</th>
-                                    <th>Site</th>
+                                    <th>Site principal</th>
+                                    <th>Site secondaire</th>
                                     <th>CFP Référent</th>
                                     <th>Date début</th>
                                     <th>Date fin</th>
@@ -61,28 +59,26 @@
                             </thead>
                             <tbody>
 
-                                <td>
-                                    <a href="#" class="btn btn-success btn-xs"><i class="far fa-eye"></i></a>
-                                    <a class='btn btn-info btn-xs' href="#">
-                                        <i class="far fa-edit"></i></a>
-                                    <a href="#" class="btn btn-danger btn-xs">
-                                        <i class="far fa-trash-alt"></i></a>
-                                </td>
+                                
                                 <?php
                                     foreach ($resultformation as $formation){
                                         echo "<tr>";
-                                        echo "<td>".$formation['ID_FORMATION']. "</td>
+                                        echo "<td>".$formation['id_formation']. "</td>
                                         <td>".$formation['ID_SECTEUR_FORMATION']."</td>
                                         <td>".$formation['intitule_formation']."</td>
-                                        <td>".$formation['niveau_formation']."</td>
-                                        <td>".$formation['ID_PARCOURS']."</td>
                                         <td>".$formation['id_site_formation']."</td>
+                                        <td>".$formation['id_site_secondaire']."</td>
                                         <td>".$formation['cfp_ref_formation']."</td>
                                         <td>".$formation['datedebut_formation']."</td>
-                                        <td>".$formation['datefin_formation']."</td>";                                                                             
-                                        
+                                        <td>".$formation['datefin_formation']."</td>  
+                                        <td><a href='#' class='btn btn-success btn-xs'><i class='far fa-eye'></i></a>
+                                    <a class='btn btn-info btn-xs' href='index.php?page=actions/ficheactionModif&id_action=".$formation['id_formation']."'>
+                                    <i class='far fa-edit'></i></a>
+                                    <a href='#' class='btn btn-danger btn-xs'>
+                                        <i class='far fa-trash-alt'></i></a>
+                                </td>";
                                     }
-                                  
+                                
                                     ?>
                             </tbody>
                         </table>

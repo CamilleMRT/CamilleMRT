@@ -1,5 +1,48 @@
 <?php
-//include ("./utils/db.php");
+include ("./utils/db.php");
+
+// *************** FICHE ACTION *************** 
+
+function getEmailResponsableSite($pdo, $site){
+    $stmt = $pdo->prepare('SELECT utilisateursgreta.email FROM utilisateursgreta INNER JOIN 
+    sites_formation ON sites_formation.id_resp_site=utilisateursgreta.id_util WHERE sites_formation.id_site=?');
+    $stmt->execute([$site]);
+    $result=$stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['email'];
+
+}
+
+
+// ESSAI UPDATE ETAPE 1
+function updateCFP($pdoP, $values)
+{
+    $stmt = $pdoP->prepare("UPDATE formations SET intitule_formation='', datevalidation_formation, datedebut_formation, datefin_formation
+    , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, id_site_formation, id_site_secondaire,
+    id_parcours, ID_SECTEUR_FORMATION, etat VALUES (?,?,?,?,?,?,?,?,?,?,?,?,1)");
+
+    $nomAction = htmlspecialchars($values['intitule_formation']);
+    $datevalidAction = htmlspecialchars($values['datevalidation_formation']);
+    $datedebutAction = htmlspecialchars($values['datedebut_formation']);
+    $datefinAction = htmlspecialchars($values['datefin_formation']);
+    $cfprefAction = ($values['cfp_ref_formation']);
+    $niveauAction = ($values['niveau_formation']);
+    $datedebutexamAction = htmlspecialchars($values['datedebut_examen_formation']);
+    $datefinexamAction = htmlspecialchars($values['datefin_examen_formation']);
+    $siteAction = ($values['id_site_formation']);
+    $siteSecondaire = ($values['id_site_secondaire']);
+    $parcoursAction = ($values['id_parcours']);
+    $secteurAction = ($values['ID_SECTEUR_FORMATION']);
+   // $modaliteAction = ($values['id_modalites_examen']);
+    $stmt->execute([$nomAction, $datevalidAction, $datedebutAction, $datefinAction, $cfprefAction, $niveauAction, 
+        $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction]);
+    $id_action = $pdoP->lastInsertId();
+    return $id_action;
+}
+
+if(@$_POST['modif']){
+    $id_action=updateCFP($pdo, $_POST);
+} 
+
 
 // POUR SELECTIONNER UNE FICHE ACTION EXISTANTE
 function getAction($pdo, $id_action)
@@ -18,19 +61,29 @@ if (isset($_GET['id_action'])) {
 }
 ?>
 
-<!-- *************** FICHE ACTION *************** -->
 
 <!-- CREER UNE FICHE ACTION -->
-
 <?php
 
+// ASSOCIATION FICHE ACTION ET SITE DE REALISATION
+function createSiteAsso($pdoP, $idSite, $idFiche)
+{
+    $stmt = $pdoP->prepare("INSERT INTO dispenser (ID_FORMATION, ID_SITE) VALUES (?,?)");
+    $stmt->execute([$idFiche, $idSite]);
+}
+
 // ************ PARTIE CFP *************
+
+
+    //createSiteAsso($pdo, $val, $idFiche);
+
+
 
 function createAction($pdoP, $values)
 {
     $stmt = $pdoP->prepare("INSERT INTO formations(intitule_formation, datevalidation_formation, datedebut_formation, datefin_formation
     , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, id_site_formation, id_site_secondaire,
-    id_parcours, ID_SECTEUR_FORMATION, id_modalites_examens, etat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1)");
+    id_parcours, ID_SECTEUR_FORMATION, etat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,1)");
 
     $nomAction = htmlspecialchars($values['intitule_formation']);
     $datevalidAction = htmlspecialchars($values['datevalidation_formation']);
@@ -44,22 +97,12 @@ function createAction($pdoP, $values)
     $siteSecondaire = ($values['id_site_secondaire']);
     $parcoursAction = ($values['id_parcours']);
     $secteurAction = ($values['ID_SECTEUR_FORMATION']);
-    $modaliteAction = ($values['id_modalites_examens']);
+   // $modaliteAction = ($values['id_modalites_examen']);
     $stmt->execute([$nomAction, $datevalidAction, $datedebutAction, $datefinAction, $cfprefAction, $niveauAction, 
-        $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction, 
-        $modaliteAction]);
+        $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction]);
     $idFiche = $pdoP->lastInsertId();
     return $idFiche;
 }
-
-
-// ASSOCIATION FICHE ACTION ET SITE DE REALISATION
-function createSiteAsso($pdoP, $idSite, $idFiche)
-{
-    $stmt = $pdoP->prepare("INSERT INTO dispenser (ID_FORMATION, ID_SITE) VALUES (?,?)");
-    $stmt->execute([$idFiche, $idSite]);
-}
-
 
 // SELECT CFP REFERENT 
 function getlistCFP($pdoP)
@@ -129,6 +172,11 @@ function getlistModalites($pdoP)
 }
 
 // ************ PARTIE RESP PROD *************
+//CONFIG BOUTON VALIDER POUR ENVOYER EN BDD PARTIE RESP PROD
+
+if(@$_POST['etape2']){
+    $idFiche=completeActionRespProd($pdo, $_POST);
+}  
 
 function completeActionRespProd($pdoP, $values)
 {
@@ -204,79 +252,4 @@ function getlistType($pdoP)
     return $resultsHeuresInter;
 }
 
-
-
-// ***************  ACTION SUR UTILISATEUR ************** 
-
-// CREER UN UTILISATEUR
-
-function createUser($pdoP, $values){
-    $stmt=$pdoP->prepare("INSERT INTO utilisateursgreta(nom, prenom, email, groupe, pwd) VALUES(UPPER(?),?,?,?,?)");
-
-    $nom = htmlspecialchars($values['nom']);
-    $prenom = htmlspecialchars($values['prenom']);
-    $email = htmlspecialchars($values['email']);
-    $pwd = htmlspecialchars($values['pwd']);
-    $groupe = htmlspecialchars($values['groupe']);
-    $pwdHash= password_hash($pwd, PASSWORD_DEFAULT);
-    $stmt->execute([$nom, $prenom, $email, $groupe, $pwdHash]);
-    $stmt->fetch();
-
-}
-if (@$_POST['creer']) {
-    createUser($pdo, $_POST);
-}
-
-// SUPPRIMER UN UTILISATEUR
-function deleteUtil($pdoP)
-{
-    $stmtDeleteUtil = $pdoP->prepare("DELETE FROM utilisateursgreta WHERE id_util=? limit 1");
-    $stmtDeleteUtil->execute();
-    $resultDeleteUtil = $stmtDeleteUtil->fetchAll(PDO::FETCH_ASSOC);
-    return $resultDeleteUtil;
-}
-
-if (@$_GET['supprimer']) {
-    deleteUtil($pdo, $_GET);
-}
-
-
-
-// GESTION DU MOT DE PASSE OUBLIE
-
-//fonction qui renvoie l'id de l'utilisateur et son email
-function getMail($pdoP, $emailP){
-    $stmt = $pdoP->prepare("SELECT email from utilisateursgreta WHERE email = ?");
-    $stmt->execute([$emailP]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if($result){
-        return $result['email'];
-    }
-    return false;
-}
-
-//fonction qui met à jour pour un identifiant donné la date du jeton et la valeur du jeton
-//pour une réinitialisation du mot de passe
-function updateToken($pdoP, $tokenP, $emailP) {
-    //ATTENTION l'identifiant doit être unique
-    $stmt = $pdoP->prepare("UPDATE utilisateursgreta SET pwd_change_date=NOW(), pwd_change_token=? WHERE email =?");
-    $stmt->execute([$tokenP, $emailP]);
-}
-
-//fonction qui renvoie les infos spécifiques à un jeton passé en paramètre
-function getInfosToken($pdoP, $tokenP){
-    //ATTENTION l'identifiant doit être unique
-    $stmt = $pdoP->prepare("SELECT pwd_change_date, id_util FROM utilisateursgreta WHERE pwd_change_token=?");
-    $stmt->execute([$tokenP]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-//fonction qui modifie le mot de passe et enlève les infos concernant le token
-function reinitPwd($pdoP, $values) {
-    //ATTENTION l'identifiant doit être unique
-    $email = htmlspecialchars($values['email']);
-    $pwd = htmlspecialchars($values['pwd']);
-    $pwdHash = password_hash($pwd, PASSWORD_DEFAULT);
-    $stmt = $pdoP->prepare("UPDATE utilisateursgreta SET pwd_change_date=NULL, pwd_change_token=NULL, pwd=?   WHERE email =?");
-    $stmt->execute([$pwdHash, $email]);
-}
+?>

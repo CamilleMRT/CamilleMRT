@@ -40,7 +40,7 @@ ob_start();
                 </li>
 
                 <li>
-                    <a class="gestionresa" href="index.php?page=actions/gestionresa">Gestion réservations</a>
+                    <a class="gestionresa" href="index.php?page=admin/gestionresa">Gestion réservations</a>
                 </li>
 
                 <?php }?>

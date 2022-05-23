@@ -4,7 +4,7 @@ if(isset($_SESSION["etatConnexion"]) && $_SESSION["etatConnexion"]==1) {
     //la connexion a été établie
    if(isAdmin()){
         array_push($whitelist, 'accueil', 'profil', 'formation', 'reservation', 'aide','actions/ficheaction','actions/supprimer','actions/ajoutreservation',
-        'admin/profilutil', 'actions/gestionresa');
+        'admin/profilutil', 'admin/gestionresa', 'actions/ficheactionModif');
     }    
     if(isDirection()){
         array_push($whitelist, 'accueil', 'profil', 'formation', 'reservation', 'aide','actions/ficheaction','actions/supprimer');

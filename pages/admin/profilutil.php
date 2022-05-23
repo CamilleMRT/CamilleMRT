@@ -1,8 +1,9 @@
 <!-- APPELER DB POUR TABLEAU DATABASE -->
 <?php 
     include('utils/db.php');
-    include ('configs/values.php');
+    include('functions/actionsGestionUtil.php');
 
+    // AFFICHER LA LISTE UTILISATEUR
     $stmtgroupe = $pdo->prepare("SELECT * FROM utilisateursgreta");
     $stmtgroupe->execute();
     $resultgroupe=$stmtgroupe->fetchAll(PDO::FETCH_ASSOC);
@@ -46,15 +47,15 @@
                         <select class="form-control" name="groupe" id="groupe"
                             placeholder="Choix du groupe utilisateur">
 
-                            <?php
-                                    foreach ($groupe as $groupe ) {
-                                    if ($groupe == $utilisateur['groupe']) {
-                                        echo "<option selected value='$groupe '>$groupe </option>";
-                                    } else {
-                                        echo "<option value='$groupe '>$groupe </option>";
-                                    }
-                                }
+                            <option selected>Choix du groupe utilisateur</option>
+                            <?php 
+                        $resultsGroupeUtil=getlistUtil($pdo);
+                            foreach ($resultsGroupeUtil as $groupe_utilisateur){
                             ?>
+
+                            <option value="<?php echo $groupe_utilisateur["groupe"]?>">
+                                <?php echo $groupe_utilisateur["groupe"]?></option>
+                            <?php } ?>
                         </select>
                     </div>
                 </div>
@@ -70,7 +71,7 @@
                 <div class="col-sm-12 col-md-4">
 
                     <div class="form-group">
-                        <input type="password" name="pwd" id="password" tabindex="2" class="form-control"
+                        <input type="password" name="passconfirm" id="passconfirm" tabindex="2" class="form-control"
                             placeholder="Confirmation mot de passe" autocomplete="off" required>
                     </div>
                 </div>
@@ -81,88 +82,70 @@
             <input type="submit" name="creer" tabindex="4" class="btn btn-success mt-4" value="Inscription">
         </div>
         </form>
-
-
-        <!-- PASSWORD -->
-        <!-- Script pour afficher / masquer password -->
-        <script>
-        function afficher() {
-            const password = document.querySelector("#password");
-            const eye = document.querySelector("#eye");
-
-            if (password.type == "password") {
-                // cas où la valeur du pwd est cachée
-                password.type = "text";
-                eye.src = "./public/img/eye-slash.svg";
-            } else {
-                password.type = "password";
-                eye.src = "./public/img/eye.svg";
-            }
-        }
-        </script>
     </div>
+
+
+    <!-- SCRIPT VALIDATION FORMULAIRE -->
+    <script>
+    $('#register-util').validate({
+        rules: {
+            nom: {
+                required: true,
+                minlength: 2
+            },
+            prenom: {
+                required: true,
+                minlength: 2
+            },
+            email: {
+                required: true,
+                maxlength: 255
+            },
+            groupe: "required",
+            password: "required",
+            passconfirm: {
+                required: true,
+                equalTo: "#password"
+            }
+        },
+        // MESSAGE MOT DE PASSE QUI NE CORRESPOND PAS
+        messages: {
+            passconfirm: {
+                equalTo: "Vous devez saisir le même mot de passe"
+            }
+        },
+        // LE FORMULAIRE NE S'ENVOI PAS SI LES CHAMPS SONT INCORRECTS
+        errorClass: "invalid",
+        submitHandler: function(form) {
+            if (form.valid()) {
+                form.submit();
+            }
+            return false;
+        }
+    });
+
+    // VERIFIER CONFORMITE ADRESSE EMAIL
+    $.validator.addMethod('email', function(value) {
+        if (value.length > 0) {
+            return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
+        }
+        return true;
+    }, 'le format de l\'email est invalide.');
+
+    // VERIFICATION REGEX MOT DE PASSE
+    $.validator.addMethod('password', function(value) {
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z\d])\S{12,50}$/.test(value);
+        },
+        'Le mot de passe doit contenir au moins 8 caractères : au moins une majuscule, une minuscule, un chiffre et un caractère spécial'
+        );
+    </script>
+
+
+    <!-- DATATABLE -->
     <div class="card m-3 text-center">
         <div class="card-header" id="title">
             <h3 class="m-2">Liste des utilisateurs</h3>
         </div>
-
-
-<!-- SCRIPT VALIDATION FORMULAIRE -->
-<script>
-$('#register-util').validate({
-    rules: {
-        nom:{
-            required: true,
-            minlength:2
-        },
-        prenom:{
-            required:true,
-            minlength:2
-        },
-        email:{
-            required: true,
-            maxlength: 255
-        },
-        groupe:"required",
-        password: "required",
-        passconfirm:{
-            required: true,
-            equalTo: "#password"
-        }
-    },
-    // MESSAGE MOT DE PASSE QUI NE CORRESPOND PAS
-    messages:{
-        passconfirm:{
-            equalTo:"Vous devez saisir le même mot de passe"
-        }
-    },
-    // LE FORMULAIRE NE S'ENVOI PAS SI LES CHAMPS SONT INCORRECTS
-    errorClass: "invalid",
-    submitHandler:function(form){
-        if(form.valid()){
-            form.submit();
-        }
-        return false;
-    }
-});
-
-// VERIFIER CONFORMITE ADRESSE EMAIL
-$.validator.addMethod('email', function(value) {
-    if (value.length > 0) {
-      return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
-    }
-    return true;
-  }, 'le format de l\'email est invalide.');
-
-  // VERIFICATION REGEX MOT DE PASSE
-  $.validator.addMethod('password', function(value) {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z\d])\S{12,50}$/.test(value);
-  }, 'Le mot de passe doit avoir plus de 12 caractères, au moins une majuscule, une minuscule, un chiffre et un caractère spécial');
-
-</script>
-
-
-        <!-- DATATABLE -->
 
         <div class="card mb-5 p-3 d-flex flex-row align-items-center">
             <div class="container mt-5">

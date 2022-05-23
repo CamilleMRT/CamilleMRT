@@ -1,3 +1,7 @@
+<?php
+include ('./functions/actionsGestionConnexion.php')
+?>
+
 <div class="profilutil">
     <main role="main" class="col-md-9 ml-sm-auto px-md-4">
         <div class="card m-3 text-center bg-light">
@@ -28,7 +32,7 @@
                         </div>
                         
                             
-                <button class="btn btn-success m-3">Valider la modification</button>
+                <button id="updatepwd" class="btn btn-success m-3">Valider la modification</button>
             </form>
         </div>
     </div>
@@ -55,8 +59,8 @@ $('#update-pwd').validate({
 
   // VERIFICATION REGEX MOT DE PASSE
   $.validator.addMethod('password', function(value) {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z\d])\S{12,50}$/.test(value);
-  }, 'Le mot de passe doit avoir plus de 12 caractères, au moins une majuscule, une minuscule, un chiffre et un caractère spécial');
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z\d])\S{8,50}$/.test(value);
+  }, 'Le mot de passe doit contenir au minimum 8 caractères, au moins une majuscule, une minuscule, un chiffre et un caractère spécial');
 
 </script>
 </div>
