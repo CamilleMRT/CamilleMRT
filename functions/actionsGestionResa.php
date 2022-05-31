@@ -15,7 +15,6 @@ function createElementResa($pdoP, $values)
 
 if (@$_POST['ajoutMat']) {
     createElementResa($pdo, $_POST);
-    print_r($_POST);
 }
 
 // LISTE CATEGORIES MATERIEL

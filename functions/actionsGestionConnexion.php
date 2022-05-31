@@ -2,10 +2,11 @@
 
 // MODIFICATION MOT DE PASSE UTILISATEUR
 function changePwd($pdoP, $values){
+    $stmt = $pdoP->prepare("UPDATE utilisateursgreta SET pwd=? WHERE id_util=?");
     $idUtil = htmlspecialchars($values['id_util']);
     $pwd = htmlspecialchars(($values['pwd']));
     $pwdHash = htmlspecialchars($pwd, PASSWORD_DEFAULT);
-    $stmt = $pdoP("UPDATE utilisateursgreta SET pwd=? WHERE id_util=?");
+    $stmt->execute();
 }
 
 if (@$_POST['udpatepwd']) {
