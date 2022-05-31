@@ -87,7 +87,7 @@
         </div>
     </div>
 
-    <!-- LISTE FICHE ACTION -->
+    <!-- LISTE RESERVATIONS -->
     <div class="card m-3 text-center bg-light">
         <div class="card-header" id="title">
             <h3 class="m-3">Historique de mes réservations</h3>
@@ -99,6 +99,7 @@
             <div class="table-responsive mx-auto">
                 <div class="row col-md-12 col-md-offset-2 custyle col-sm-12">
                     <table class="table table-hover table-sm">
+                        <caption>Tableau historique des réservations</caption>
                         <thead>
                             <tr>
                                 <th>N° réservation</th>

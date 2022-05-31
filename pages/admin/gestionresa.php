@@ -93,6 +93,7 @@ include('./functions/actionsGestionResa.php');
 
                 <div class="table-responsive">
                     <table id="materiel" class="table table-hover text-left">
+                        <caption>Formulaire de réservation</caption>
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -155,6 +156,7 @@ $(document).ready(function() {
 
             <div class="table-responsive">
                 <table id="resaUtil" class="table table-hover text-left">
+                    <caption>Liste des réservations utilisateur</caption>
                     <thead>
                         <tr>
                             <th>Nom</th>

@@ -43,7 +43,7 @@ function deleteUtil($pdoP)
 }
 
 if (@$_GET['supprimer']) {
-    deleteUtil($pdo, $_GET);
+    deleteUtil($pdo);
 }
 
 

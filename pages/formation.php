@@ -44,6 +44,7 @@
                 <div class="table-responsive mt-5">
                     <div class="row col-md-12 col-md-offset-2 custyle">
                         <table class="table table-hover table-sm text-center" id="listeformation">
+                            <caption>Liste des formations</caption>
                             <thead>
                                 <tr>
                                     <th>N° action</th>

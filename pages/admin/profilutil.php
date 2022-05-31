@@ -152,6 +152,7 @@
 
                 <div class="table-responsive">
                     <table id="utilisateur" class="table table-hover text-left">
+                        <caption>Liste des utilisateurs</caption>
                         <thead>
                             <tr>
                                 <th>ID</th>
