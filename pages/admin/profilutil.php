@@ -181,7 +181,7 @@
                                 <td><a class='btn btn-info btn-xs'
                                         href="index.php?page=admin/profilutil&id=<?= $utilisateurs['id_util'] ?>">
                                         <i class="far fa-edit"></i></a></td>
-                                <td><a class="btn btn-danger btn-xs" name="supprimer"
+                                <td><a class="btn btn-danger btn-xs" name="supprimer" 
                                         onclick="suppression_utilisateur(<?= $utilisateurs['id_util'] ?>)">
                                         <i class="far fa-trash-alt"></i></a></td>
                             </tr>
@@ -200,23 +200,6 @@
 $(document).ready(function() {
     $('#utilisateur').DataTable();
 });
-
-// SCRIPT BTN SUPPRIMER
-function suppression_utilisateur(id_util) {
-    Swal.fire({
-        title: 'Supprimer un contact !',
-        text: "Souhaitez vous supprimer ce contact ?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Supprimer !'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location = "index.php?page=admin/profilutil&id_util" + id_util;
-        }
-    })
-}
 
 // AJOUTER DES BOUTONS EXTRACTION
 $(document).ready(function() {

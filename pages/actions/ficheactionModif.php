@@ -2,14 +2,47 @@
 include('functions/actions.php');
 include ('utils/db.php');
 
-$action = getAction($pdo, $_GET['id_action']);
-// ACCES AUX MODIFICATION DES ETAPES
-if (isset ($_POST ['modif'])){
-    $etat=$_POST['etat'];
-    if ($etat==2){
-        
+//$action = getAction($pdo, $_GET['id_action']);
+
+    // si n° action existant alors possibilité de modifier une fiche action précise
+    $id_action = @$_GET['id_action'];
+    $action = getAction($pdo, $id_action);
+
+// MODIF ETAPE 1
+if(@$_POST['etape1']){
+    updateAction($pdo, $_POST, $id_action);
+} 
+
+// CONFIG BOUTON VALIDER ENVOI BDD PARTIE RESP PROD + MAIL COORDO
+if(@$_POST['etape2']){
+    updateAction2($pdo, $_POST);
+    try {
+$dest=getEmailCoordo($pdo, $_POST['id_site_formation']);
+    $sujet = "Compléter une fiche action";
+    $headers[] = 'MIME-Version: 1.0';
+    $headers[] = 'Content-type: text/html; charset=UTF-8';
+    $headers[] = 'From: camillemarante@gmail.com';
+    $message = '<h1>Compléter une nouvelle fiche action</h1>
+<p>Pour compléter la partie coordonnateur de la fiche action veuillez suivre ce lien : 
+<a href="localhost/SITEGRETA-SECOURS2/index.php?page=ficheactionModif&id_action=' . $idFiche . '">lien</a></p>';
+    if (mail($dest, $sujet, utf8_decode($message), implode("\r\n", $headers))) {
     }
+} catch (PDOException $e) {
+echo($e);
 }
+} 
+
+if(@$_POST['etape3']){
+    completeAction3($pdo, $_POST);
+} 
+
+// if(@$_POST['etape3']){
+//     updateAction($pdo, $_POST);
+// } 
+
+// if(@$_POST['etape4']){
+//     updateAction($pdo, $_POST);
+// } 
 ?>
 
 
@@ -20,7 +53,7 @@ if (isset ($_POST ['modif'])){
             <h3>Modifier une fiche action </h3>
         </div>
         <br>
-        <form action="index.php?page=actions/ficheaction" method="POST">
+        <form action="index.php?page=actions/ficheactionModif&id_action=<?php echo $id_action ?>" method="POST">
             <input type='hidden' value='<?php echo $action['etat']?>' name='etat'>
 
             <div class="card m-3 p-2 text-center" id="subtitle">
@@ -83,7 +116,7 @@ if (isset ($_POST ['modif'])){
                         <p class="text-left"> Date de validation de l'action par le Directeur
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php echo $resultAction['datevalidation_formation'] ?>"
+                                value="<?php echo @$action['datevalidation_formation'] ?>"
                                 name="datevalidation_formation" value='<?php echo $action['datevalidation_formation']?>' required />
                         </p>
                     </div>
@@ -93,7 +126,7 @@ if (isset ($_POST ['modif'])){
                         <p class="text-left"> Date de début de l'action
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php if(count($resultAction)>0) echo $resultAction['datedebut_formation'] ?>"
+                                value="<?php if(count($action)>0) echo $action['datedebut_formation'] ?>"
                                 name="datedebut_formation" value='<?php echo $action['datedebut_formation']?>'required>
                         </p>
                     </div>
@@ -105,7 +138,7 @@ if (isset ($_POST ['modif'])){
                         <p class="text-left"> Date de fin de l'action
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php if(count($resultAction)>0) echo $resultAction['datefin_formation'] ?>"
+                                value="<?php if(count($action)>0) echo $action['datefin_formation'] ?>"
                                 name="datefin_formation" value='<?php echo $action['datefin_formation']?>'required />
                         </p>
                     </div>
@@ -249,28 +282,11 @@ if (isset ($_POST ['modif'])){
             <!-- Boutons -->
             <div class="row justify-content-center">
                 <div class="m-3">
-                    <input type="submit" onclick="sendForm" name="modif" class="btn btn-success" value="Valider les modifications">
+                    <input type="submit" onclick="sendForm" name="etape1" class="btn btn-success" value="Valider les modifications">
                 </div>
             </div>
 
     </div>
-    <script>
-    function sendForm(id_util) {
-    Swal.fire({
-        title: 'Envoyer la notification au responsable de production',
-        text: "Souhaitez vous supprimer ce contact ?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Envoyé !'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location = "index.php?page=actions/ficheaction";
-        }
-    })
-}
-</script>
     <?php
         }
     ?>
@@ -278,7 +294,7 @@ if (isset ($_POST ['modif'])){
 
     <!-- ******** 2eme partie - Responsable Prod ******** -->
 
-    <form action="index.php?page=actions/ficheaction" method="POST">
+    <form action="index.php?page=ficheactionModif&id_action= <?php echo $id_action ?> method="POST">
 
         <div class="card m-5 text-center bg-light">
 
@@ -291,7 +307,7 @@ if (isset ($_POST ['modif'])){
             <div class="row m-2">
                 <div class="col-sm-12 col-md-6">
                     <p class="text-left">Coordonnateur(trice)
-                        <select <?=(isRespProd() || isAdmin() || isDirection()) ? '' : 'readonly' ?> name="??????"
+                        <select <?=(isRespProd() || isAdmin() || isDirection()) ? '' : 'readonly' ?> name="coordo_form"
                             class="form-control" required>
                             <option selected>Choix</option>
                             <?php
@@ -310,7 +326,7 @@ if (isset ($_POST ['modif'])){
                 <!-- Assistant de formation-->
                 <div class="col-sm-12 col-md-6">
                     <p class="text-left">Assistant(e) de formation
-                        <select <?=(isRespProd() || isAdmin() || isDirection()) ? '' : 'readonly' ?> name="??????"
+                        <select <?=(isRespProd() || isAdmin() || isDirection()) ? '' : 'readonly' ?> name="assistant_form"
                             class="form-control" required>
                             <option selected>Choix</option>
                             <?php
@@ -334,7 +350,7 @@ if (isset ($_POST ['modif'])){
             <!-- Boutons -->
             <div class="row justify-content-center">
                 <div class="m-3">
-                    <button type="button" name="etape2" class="btn btn-success">Valider</button>
+                    <input type="submit" onclick="sendForm" name="etape2" class="btn btn-success" value="Valider les modifications">
                 </div>
             </div>
 
@@ -345,7 +361,7 @@ if (isset ($_POST ['modif'])){
     </form>
 
     <!-- ******** 3eme partie - Coordonnateur ******** -->
-    <form id="formCoordo" action="index.php?page=actions/ficheaction" method="POST">
+    <form action="index.php?page=ficheactionModif&id_action= <?php echo $id_action ?> method="POST">
 
         <!-- Titre centre -->
         <div class="card m-5 text-center bg-light">
@@ -610,7 +626,7 @@ if (isset ($_POST ['modif'])){
     </form>
 
     <!-- ******** 4eme partie - Service Gestion ******** -->
-    <form>
+    <form action="index.php?page=ficheactionModif&id_action= <?php echo $id_action ?> method="POST">
 
         <div class="card m-5 text-center bg-light">
 

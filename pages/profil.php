@@ -30,9 +30,7 @@ include ('./functions/actionsGestionConnexion.php')
                             <input type="password" class="form-control" placeholder="Confirmer mot de passe"
                                 name="passconfirm" id="passconfirm">
                         </div>
-                        
-                            
-                <button id="updatepwd" class="btn btn-success m-3">Valider la modification</button>
+                <button id="updatepwd" onclick="alert('Modification validée, vous allez être redirigé vers la page de connexion')" class="btn btn-success m-3">Valider la modification</button>
             </form>
         </div>
     </div>

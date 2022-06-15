@@ -21,26 +21,16 @@ body{
 /* HEADER */
 
 
-.header{
-    padding: 30px 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
+nav{
     background: #f5f5f5;
     box-shadow:  7px 7px 40px #e4e4e4,
                  -7px -7px 40px #ffffff;}
 
-.header h5{
-    margin-right: 35%;
-
+#nav-left{
+    background: #f5f5f5;
+    box-shadow:  7px 7px 40px #e4e4e4,
+                 -7px -7px 40px #ffffff
 }
-
-.header img.logo{
-    margin-left: 20px;
-}
-
 
 /* NAV */
 
@@ -53,8 +43,13 @@ a:focus{
 	
 }
 
+.side-navbar-header a, h5{
+ display: flex;
+ justify-content: center;
+}
+
 a.profile{
-    margin: 35%;
+    margin-top: 20%;
     font-size: 50px;
     color: var(--bleu) !important;
     transition: color 0.5s;
@@ -67,37 +62,18 @@ a.profile:hover{
 
 }
 
-.side-navbar-header{
-    margin-bottom: 10%;
+.side-navbar-header h5{
+    margin-top: 20%;
+    font-size: medium;  
 }
 
-.side-navbar {
-    width: 250px;
-    height: 100%;
-    padding-top: 20px;
-    position: fixed;
-    margin-left: -300px;
-    transition: 0.5s;
-    background: #f5f5f5;
-    box-shadow:  7px 7px 40px #e4e4e4,
-    -7px -7px 40px #ffffff;
-}
-    
-  .my-container {
-    transition: 0.4s;
-  }
-  
-  .active-nav {
-    margin-left: 0;
-  }
-  
-  .side-navbar ul li {
-      margin-left: 13%;
-      padding: 15px;
+.navbar-nav {
+      margin-left: 20%;
+      padding: 15% 0 50% 0;
       list-style-type: none;
   }
   
-  .side-navbar ul li a {
+.navbar-nav li a {
       color: gray;
       font-weight: 500;
       display: block;
@@ -105,82 +81,29 @@ a.profile:hover{
       margin: 0;
   }
   
-  .side-navbar ul li a .fas {
+.navbar-nav li a .fas, .far, .fa-regular {
       width: 25px !important;
   }
   
-  .side-navbar ul li a .far {
-      width: 25px !important;
-  }
-  
-  .side-navbar ul li a:hover {
+  .navbar-nav li a:hover {
       color: var(--bleu);
-      font-weight: bold;
+      font-weight:400;
       text-decoration: none;
   }
-  .side-navbar ul li a.help{
+  .navbar-nav li a.help{
       margin-top: 30px;
   }
-  .side-navbar ul li a.home{
+  .navbar-nav li a.home{
       color: var(--bleu);
   }
-  .side-navbar ul li a.help:hover{
+  .navbar-nav li a.help:hover{
       color: var(--orange);
   }
   
-  .side-navbar ul li a.deconnexion:hover{
+  .navbar-nav li a.deconnexion:hover{
       color:red;
   } 
 
-  /* for main section */
-  .active-cont {
-    margin-left: 180px;
-  }
-  
-  #menu-btn {
-    background-color: var(--bleu);
-    color: #fff;
-    margin-left: -30px;
-    display: none;
-  }
-
-  #menu-btn:active{
-      color: var(--orange);
-  }
-  
-  .my-container input {
-    border-radius: 2rem;
-    padding: 2px 20px;
-  }
-  
-@media screen and (max-width:600px) {
-    .header{
-        width: 100%;
-    }
-    #menu-btn{
-        display: inline;
-    }
-    
-}
 
 
 
-
-
-/* ANCIENNE NAVBAR
-.wrapper {
-    margin-top: 0px;
-    position:fixed;
-}
-
-.sidebar {
-    width: 320px;
-    height: 100%;
-    padding-top: 20px;
-    border-radius: 30px;
-    background: #f5f5f5;
-    box-shadow:  7px 7px 40px #e4e4e4,
-                 -7px -7px 40px #ffffff;
-    position: fixed;
-}
-*/

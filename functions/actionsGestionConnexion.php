@@ -6,7 +6,7 @@ function changePwd($pdoP, $values){
     $idUtil = htmlspecialchars($values['id_util']);
     $pwd = htmlspecialchars(($values['pwd']));
     $pwdHash = htmlspecialchars($pwd, PASSWORD_DEFAULT);
-    $stmt->execute();
+    $stmt->execute([$idUtil, $pwd, $pwdHash]);
 }
 
 if (@$_POST['udpatepwd']) {

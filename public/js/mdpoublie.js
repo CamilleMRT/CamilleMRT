@@ -8,20 +8,20 @@ function verifUser(elem, valMailToken) {
 
 $('#recovery-form').validate({
     rules: {
-        username: {
+        email: {
             required: true,
             minlength: 2
         },
-        password: {
+        pwd: {
             required: true,
         },
-        confirm_password: {
+        pwdConf: {
             required: true,
             equalTo: "#pwd"
         }
     },
     messages: {
-        confirm_password: {
+        pwdConf: {
             equalTo: "Vous devez saisir le même mot de passe."
         }
     },

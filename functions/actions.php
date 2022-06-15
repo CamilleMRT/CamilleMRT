@@ -1,84 +1,11 @@
 <?php
 include ("./utils/db.php");
 
-// *************** FICHE ACTION *************** 
+// *************** CONFIG FICHE ACTION *************** 
 
-function getEmailResponsableSite($pdo, $site){
-    $stmt = $pdo->prepare('SELECT utilisateursgreta.email FROM utilisateursgreta INNER JOIN 
-    sites_formation ON sites_formation.id_resp_site=utilisateursgreta.id_util WHERE sites_formation.id_site=?');
-    $stmt->execute([$site]);
-    $result=$stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['email'];
+// FONCTIONS 
 
-}
-
-
-// ESSAI UPDATE ETAPE 1
-function updateCFP($pdoP, $values)
-{
-    $stmt = $pdoP->prepare("UPDATE formations SET intitule_formation='', datevalidation_formation, datedebut_formation, datefin_formation
-    , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, id_site_formation, id_site_secondaire,
-    id_parcours, ID_SECTEUR_FORMATION, etat VALUES (?,?,?,?,?,?,?,?,?,?,?,?,1)");
-
-    $nomAction = htmlspecialchars($values['intitule_formation']);
-    $datevalidAction = htmlspecialchars($values['datevalidation_formation']);
-    $datedebutAction = htmlspecialchars($values['datedebut_formation']);
-    $datefinAction = htmlspecialchars($values['datefin_formation']);
-    $cfprefAction = ($values['cfp_ref_formation']);
-    $niveauAction = ($values['niveau_formation']);
-    $datedebutexamAction = htmlspecialchars($values['datedebut_examen_formation']);
-    $datefinexamAction = htmlspecialchars($values['datefin_examen_formation']);
-    $siteAction = ($values['id_site_formation']);
-    $siteSecondaire = ($values['id_site_secondaire']);
-    $parcoursAction = ($values['id_parcours']);
-    $secteurAction = ($values['ID_SECTEUR_FORMATION']);
-   // $modaliteAction = ($values['id_modalites_examen']);
-    $stmt->execute([$nomAction, $datevalidAction, $datedebutAction, $datefinAction, $cfprefAction, $niveauAction, 
-        $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction]);
-    $id_action = $pdoP->lastInsertId();
-    return $id_action;
-}
-
-if(@$_POST['modif']){
-    $id_action=updateCFP($pdo, $_POST);
-} 
-
-
-// POUR SELECTIONNER UNE FICHE ACTION EXISTANTE
-function getAction($pdo, $id_action)
-{
-    $stmtAction = $pdo->prepare("SELECT * FROM formations WHERE ID_FORMATION =?");
-    $stmtAction->execute([$id_action]);
-    $resultAction = $stmtAction->fetch(PDO::FETCH_ASSOC);
-    return $resultAction;
-}
-
-$resultAction = [];
-
-if (isset($_GET['id_action'])) {
-    // si n° action existant alors possibilité de modifier une fiche action précise
-    $resultAction = getAction($pdo, $_GET['id_action']);
-}
-?>
-
-
-<!-- CREER UNE FICHE ACTION -->
-<?php
-
-// ASSOCIATION FICHE ACTION ET SITE DE REALISATION
-function createSiteAsso($pdoP, $idSite, $idFiche)
-{
-    $stmt = $pdoP->prepare("INSERT INTO dispenser (ID_FORMATION, ID_SITE) VALUES (?,?)");
-    $stmt->execute([$idFiche, $idSite]);
-}
-
-// ************ PARTIE CFP *************
-
-
-    //createSiteAsso($pdo, $val, $idFiche);
-
-
-
+// CREER UNE FICHE ACTION
 function createAction($pdoP, $values)
 {
     $stmt = $pdoP->prepare("INSERT INTO formations(intitule_formation, datevalidation_formation, datedebut_formation, datefin_formation
@@ -103,6 +30,144 @@ function createAction($pdoP, $values)
     $idFiche = $pdoP->lastInsertId();
     return $idFiche;
 }
+
+// SUPPRIMER UNE FICHE ACTION
+function deleteAction($pdoP, $values)
+{
+    $stmtDeleteAction = $pdoP->prepare("DELETE FROM formations WHERE formations.id_formation=?");
+    $stmtDeleteAction->execute([$values['supprimerAction']]);
+    $resultDeleteAction = $stmtDeleteAction->fetchAll(PDO::FETCH_ASSOC);
+    return $resultDeleteAction;
+}
+
+
+// ASSOCIATION FICHE ACTION ET SITE DE REALISATION
+function createSiteAsso($pdoP, $idSite, $idFiche)
+{
+    $stmt = $pdoP->prepare("INSERT INTO dispenser (ID_FORMATION, ID_SITE) VALUES (?,?)");
+    $stmt->execute([$idFiche, $idSite]);
+}
+
+// POUR SELECTIONNER UNE FICHE ACTION EXISTANTE
+function getAction($pdo, $id_action)
+{
+    $stmtAction = $pdo->prepare("SELECT * FROM formations WHERE ID_FORMATION =?");
+    $stmtAction->execute([$id_action]);
+    $resultAction = $stmtAction->fetch(PDO::FETCH_ASSOC);
+    return $resultAction;
+}
+
+// UPDATE FICHE ACTION PARTIE 1
+function updateAction($pdoP, $values, $idP)
+{
+    // $stmt = $pdoP->prepare("UPDATE formations SET intitule_formation='', datevalidation_formation, datedebut_formation, datefin_formation
+    // , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, id_site_formation, id_site_secondaire,
+    // id_parcours, ID_SECTEUR_FORMATION VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+
+$stmt = $pdoP->prepare("UPDATE formations SET intitule_formation = ?, datevalidation_formation = ?, datedebut_formation= ?, datefin_formation
+, cfp_ref_formation= ?, niveau_formation= ?, datedebut_examen_formation= ?, datefin_examen_formation= ?, id_site_formation= ?, id_site_secondaire= ?,
+id_parcours= ?, ID_SECTEUR_FORMATION = ? WHERE id_formation = ?");
+
+    $nomAction = htmlspecialchars($values['intitule_formation']);
+    $datevalidAction = htmlspecialchars($values['datevalidation_formation']);
+    $datedebutAction = htmlspecialchars($values['datedebut_formation']);
+    $datefinAction = htmlspecialchars($values['datefin_formation']);
+    $cfprefAction = ($values['cfp_ref_formation']);
+    $niveauAction = ($values['niveau_formation']);
+    $datedebutexamAction = htmlspecialchars($values['datedebut_examen_formation']);
+    $datefinexamAction = htmlspecialchars($values['datefin_examen_formation']);
+    $siteAction = ($values['id_site_formation']);
+    $siteSecondaire = ($values['id_site_secondaire']);
+    $parcoursAction = ($values['id_parcours']);
+    $secteurAction = ($values['ID_SECTEUR_FORMATION']);
+   // $modaliteAction = ($values['id_modalites_examen']);
+    $stmt->execute([$nomAction, $datevalidAction, $datedebutAction, $datefinAction, $cfprefAction, $niveauAction, 
+        $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction, $idP]);
+    // $id_action = $pdoP->lastInsertId();
+    // return $id_action;
+}
+
+// CREER FICHE ACTION PARTIE 2
+function updateAction2($pdoP, $values)
+{
+    $stmt = $pdoP->prepare("UPDATE formations SET coordo_form, assistant_form, etat VALUES (?,?,2)");
+
+    $coordoForm = ($values['coordo_form']);
+    $assistantForm = ($values['assistant_form']);
+    $stmt->execute([$coordoForm, $assistantForm]);
+    $idFiche = $pdoP->lastInsertId();
+    return $idFiche;
+}
+
+// CREER FICHE ACTION PARTIE 3
+
+function completeAction3($pdoP, $values)
+{
+    $stmt = $pdoP->prepare("UPDATE formations SET id_personnel_formation, cat_inter, heure_inter, nature_heure_inter, tarif, etat VALUES (?,?,?,?,?,3)");
+
+    $idPersonnelForm = ($values['id_personnel_formation']);
+    $catIntervenant = ($values['cat_inter']);
+    $heureInter = ($values['heure_inter']);
+    $natureHeureInter = ($values['nature_heure_inter']);
+    $tarif = ($values['tarif']);
+    $stmt->execute([$idPersonnelForm, $catIntervenant, $heureInter, $natureHeureInter, $tarif]);
+    $idFiche = $pdoP->lastInsertId();
+    return $idFiche;
+}
+
+
+
+// CREER FICHE ACTION PARTIE 4
+
+function createAction4($pdoP, $values)
+{
+    $stmt = $pdoP->prepare("UPDATE formations SET intitule_formation='', datevalidation_formation, datedebut_formation, datefin_formation
+    , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, id_site_formation, id_site_secondaire,
+    id_parcours, ID_SECTEUR_FORMATION, etat VALUES (?,?,?,?,?,?,?,?,?,?,?,?,1)");
+
+    $nomAction = htmlspecialchars($values['intitule_formation']);
+    $datevalidAction = htmlspecialchars($values['datevalidation_formation']);
+    $datedebutAction = htmlspecialchars($values['datedebut_formation']);
+    $datefinAction = htmlspecialchars($values['datefin_formation']);
+    $cfprefAction = ($values['cfp_ref_formation']);
+    $niveauAction = ($values['niveau_formation']);
+    $datedebutexamAction = htmlspecialchars($values['datedebut_examen_formation']);
+    $datefinexamAction = htmlspecialchars($values['datefin_examen_formation']);
+    $siteAction = ($values['id_site_formation']);
+    $siteSecondaire = ($values['id_site_secondaire']);
+    $parcoursAction = ($values['id_parcours']);
+    $secteurAction = ($values['ID_SECTEUR_FORMATION']);
+   // $modaliteAction = ($values['id_modalites_examen']);
+    $stmt->execute([$nomAction, $datevalidAction, $datedebutAction, $datefinAction, $cfprefAction, $niveauAction, 
+        $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction]);
+    $id_action = $pdoP->lastInsertId();
+    return $id_action;
+}
+
+
+// SELECT EMAIL RESP PROD POUR ETAPE 2
+function getEmailResponsableSite($pdo, $site){
+    $stmt = $pdo->prepare('SELECT utilisateursgreta.email FROM utilisateursgreta INNER JOIN 
+    sites_formation ON sites_formation.id_resp_site=utilisateursgreta.id_util WHERE sites_formation.id_site=?');
+    $stmt->execute([$site]);
+    $result=$stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['email'];
+}
+
+
+
+// SELECT EMAIL COORDONNATEUR POUR ETAPE 3
+function getEmailCoordo($pdo, $site){
+    $stmt = $pdo->prepare('SELECT utilisateursgreta.email FROM utilisateursgreta INNER JOIN 
+    sites_formation ON sites_formation.id_resp_site=utilisateursgreta.id_util WHERE sites_formation.id_site=?');
+    $stmt->execute([$site]);
+    $result=$stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['email'];
+}
+
+
+
+// ************ PARTIE CFP *************
 
 // SELECT CFP REFERENT 
 function getlistCFP($pdoP)
@@ -172,11 +237,6 @@ function getlistModalites($pdoP)
 }
 
 // ************ PARTIE RESP PROD *************
-//CONFIG BOUTON VALIDER POUR ENVOYER EN BDD PARTIE RESP PROD
-
-if(@$_POST['etape2']){
-    $idFiche=completeActionRespProd($pdo, $_POST);
-}  
 
 function completeActionRespProd($pdoP, $values)
 {
@@ -209,9 +269,6 @@ function getlistAssForm($pdoP)
 
 
 // *********** PARTIE COORDO ************
-if(@$_POST['etape3']){
-    $idFiche=completeActionCoordo($pdo, $_POST);
-}  
 
 function completeActionCoordo($pdoP, $values)
 {

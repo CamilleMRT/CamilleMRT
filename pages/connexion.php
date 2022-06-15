@@ -1,101 +1,89 @@
-   <div class="background">
-       <div class="shape"></div>
-       <div class="shape"></div>
-   </div>
+  <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+  </div>
 
-   <div class="form">
+  <div class="form">
 
-       <form action="index.php?page=authentification" method="POST">
-           <!-- action = fichier qui enregistrera en bdd les valeurs saisies -->
+      <form action="index.php?page=authentification" method="POST">
+          <!-- action = fichier qui enregistrera en bdd les valeurs saisies -->
 
-           <img class="d-block mx-auto" src="public/img/logo-gretapdl.png" alt="logo">
+          <img class="d-block mx-auto" src="public/img/logo-gretapdl.png" alt="logo">
 
-           <!-- EMAIL -->
-           <div>
-               <input type="text" class="form-control text-center mt-5" placeholder="Identifiant" name="email"
-                   id="emailco" autocomplete="off" onFocus="email" required>
+          <!-- EMAIL -->
+          <div>
+              <input type="text" class="form-control text-center mt-5" placeholder="Identifiant" name="email"
+                  id="emailco" autocomplete="off" onFocus="email" required>
 
-           </div>
+          </div>
 
-           <!-- PASSWORD -->
-           <div class="input-group">
-               <input type="password" class="form-control text-center" placeholder="Mot de Passe" name="pwd"
-                   id="password" required>
-               <div class="input-group-prepend">
-                   <span class="input-group-text">
-                       <img id="eye" src="./public/img/eye.svg" onclick="afficher()" alt=""></span>
-               </div>
-           </div>
+          <!-- PASSWORD -->
+          <div class="input-group">
+              <input type="password" class="form-control text-center" placeholder="Mot de Passe" name="pwd"
+                  id="password" required>
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                      <img id="eye" src="./public/img/eye.svg" onclick="afficher()" alt=""></span>
+              </div>
+          </div>
 
-           <!-- Script pour afficher / masquer password -->
-           <script>
-           function afficher() {
-               const password = document.querySelector("#password");
-               const eye = document.querySelector("#eye");
+          <!-- Script pour afficher / masquer password -->
+          <script>
+          function afficher() {
+              const password = document.querySelector("#password");
+              const eye = document.querySelector("#eye");
 
-               if (password.type == "password") {
-                   // cas où la valeur du pwd est cachée
-                   password.type = "text";
-                   eye.src = "./public/img/eye-slash.svg";
-               } else {
-                   password.type = "password";
-                   eye.src = "./public/img/eye.svg";
-               }
-           }
+              if (password.type == "password") {
+                  // cas où la valeur du pwd est cachée
+                  password.type = "text";
+                  eye.src = "./public/img/eye-slash.svg";
+              } else {
+                  password.type = "password";
+                  eye.src = "./public/img/eye.svg";
+              }
+          }
+          </script>
+          
+          <?php
+                if (isset($_SESSION["etatConnexion"]) && 
+                $_SESSION["etatConnexion"] == 0) {
+                echo 
+                "<p class=text-center>Identifiant ou 
+                mot de passe incorrect</p>";
+                }
+                ?>
 
-           // SCRIPT REGLES DE CONNEXION PASSWORD
-           /*  function controlPwd(elemPwd) {
-              const pwd = String(elemPwd.value);
-              if (!pwd.match(/[0-9]/g) ||
-                  !pwd.match(/[A-Z]/g) ||
-                  !pwd.match(/[a-z]/g) ||
-                  !pwd.match(/[^a-zA-Z\d]/g) ||
-                  pwd.length < 12) {
-                      //mot de passe invalide
-                      elemPwd.validity.valid = "false";
-                      //info bulle sur le type d'erreur
-                      elemPwd.setCustomValidity("Votre mot de passe doit comporter au moins une majuscule, minuscule, chiffre et signe de ponctuation");
-                  } else {
-                      //nettoyage de l'invalidité de la zone
-                      elemPwd.validity.valid = "true";
-                      elemPwd.setCustomValidity("");
-                  }
-             } */
-           </script>
+          <div class="container">
+              <div class="row">
+                  <div class="col text-center">
+                      <div>
+                          <label for="connexion"></label>
+                          <input class="btn btn-info my-2" type="submit" value="Connexion" name="connexion"
+                              id="connexion">
+                      </div>
+                  </div>
+              </div>
+          </div>
 
-           <div class="container">
-               <div class="row">
-                   <div class="col text-center">
-                       <div>
-                           <label for="connexion"></label>
-                           <input class="btn btn-info my-2" type="submit" value="Connexion" name="connexion"
-                               id="connexion">
-                       </div>
+          <!-- Si incorrecte afficher message -->
 
-                   </div>
-               </div>
-           </div>
+          <div class="text-center">
 
-           <!-- Si incorrecte afficher message -->
+              <script>
+              function redirection() {
+                  const email = $('#emailco').val();
+                  window.location.href = "index.php?page=mdpoublie&email=" + email;
+              }
+              </script>
 
-           <div class="text-center">
+              <a href="#" id="mdp" class="text-dark" onclick="redirection()">Mot de passe oublié ?</a>
 
-               <script>
-               function redirection() {
-                   const email = $('#emailco').val();
-                   window.location.href = "index.php?page=mdpoublie&email=" + email;
-               }
-               </script>
+          </div>
 
-               <a href="#" id="mdp" class="text-dark" onclick="redirection()">Mot de passe oublié ?</a>
+          <div class="text-center">
 
-           </div>
+              <a onclick="window.location.href='mailto:camillemarante@gmail.com'" id="assistance"
+                  class="text-dark">Assistance technique</a>
 
-           <div class="text-center">
-
-               <a onclick="window.location.href='mailto:camillemarante@gmail.com'" id="assistance" class="text-dark">Assistance technique</a>
-
-       </form>
-   </div>
-
-
+      </form>
+  </div>

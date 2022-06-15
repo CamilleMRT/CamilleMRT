@@ -26,10 +26,10 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
         if ($timeCourant - $timeToken > $delais) { //le délais est dépassé
             echo "le délais pour changer votre mot de passe est dépassé. Veuillez refaire la demande.";
         } else { //l'utilisateur peut saisir un nouveau mot de passe car jeton valide et délas non dépassé
-            echo '<p class="m-4 text-center">Réinitialisation de votre mot de passe :</p>';
             echo '<div class="container mt-3">
             
-<div class="row justify-content-center">
+<div class="row">
+<p class="mt-4 ml-4">Réinitialisation de votre mot de passe :</p>
     <div class="col-12">
         <form id="recovery-form" action="index.php?page=mdpoublie" method="POST">
 
@@ -39,15 +39,15 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
 </div>
 
 <div class="form-group col-6">
-    <input type="password" name="pwd" id="pwd" class="form-control" placeholder="Mot de passe" value="" required>
+    <input type="password" name="pwd" id="pwd" class="form-control" placeholder="Nouveau mot de passe" value="" required>
 </div>
 
 <div class="form-group col-6">
-    <input type="password" name="pwdConf" id="pwdConf" class="form-control" placeholder="pwd" value="" required>
+    <input type="password" name="pwdConf" id="pwdConf" class="form-control" placeholder="Confirmer le nouveau mot de passe" value="" required>
 </div>
 
-<div class="form-group col-2">
-    <input type="submit" name="recovery-submit" id="recovery-submit" class="form-control btn-secondary" value="Changement pwd">
+<div class="form-group col-3">
+    <input type="submit" name="recovery-submit" id="recovery-submit" class="form-control btn-secondary" value="Changer le mot de passe">
 </div>
 </form>
 </div>
@@ -58,8 +58,8 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
 
     $email = htmlspecialchars(@$_GET['email']);
     if (strlen($email) == 0) { //l'utilisateur n'a pas saisi son identifiant
-        echo '<p class="mt-4 ml-5">Vous devez saisir votre identifiant de connexion :</p>';
         echo '<div class="container mt-3">
+        <p class="mt-4 ml-5">Vous devez saisir votre identifiant de connexion :</p>
 
 <div class="row">
 <div class="col-12">
@@ -68,7 +68,7 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
 <input type="hidden" name="page" value="mdpoublie">
 
 <div class="form-group col-sm-6">
-<input type="text" name="email" id="email" class="form-control" placeholder="identifiant" value="" required>
+<input type="text" name="email" id="email" class="form-control" placeholder="Identifiant" value="" required>
 </div>
 <div class="form-group col-md-2 col-sm-6">
 <input type="submit" name="login-submit" id="login-submit" class="form-control btn-secondary" value="Envoi mail">
@@ -87,7 +87,7 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
         $token = bin2hex($token);
         $message = '<h1>Réinitialisation de votre mot de passe</h1>
     <p>pour réinitialiser votre mot de passe, veuillez suivre ce lien : 
-    <a href="localhost/SITEGRETA-SECOURS2/index.php?page=mdpoublie&token=' . $token . '">lien</a></p>fin message';
+    <a href="localhost/SITEGRETA-SECOURS2/index.php?page=mdpoublie&token=' . $token . '">lien</a></p>';
         if (mail($dest, $sujet, utf8_decode($message), implode("\r\n", $headers))) {
             echo "Un email vous a été envoyé sur votre boite mail, veuillez le consulter.";
             //enregistrement en BD du token et de la date
@@ -97,4 +97,4 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
         }
     }
 } ?>
-<script src="./public/js/mdpoublie.js"></script>
+<!--<script src="./public/js/mdpoublie.js"></script>-->
