@@ -8,7 +8,7 @@ $action = getAction($pdo, $id_action);
 
 // MODIF ETAPE 1
 if(@$_POST['etape1']){
-    updateAction($pdo, $_POST, $id_action);
+    updateAction($pdo, $_POST);
 } 
 
 // CONFIG BOUTON VALIDER ENVOI BDD PARTIE RESP PROD + MAIL COORDO

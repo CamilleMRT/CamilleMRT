@@ -64,10 +64,6 @@ function updateAction($pdoP, $values)
      , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, id_site_formation, id_site_secondaire,
      id_parcours, ID_SECTEUR_FORMATION VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
 
-/*$stmt = $pdoP->prepare("UPDATE formations SET intitule_formation = ?, datevalidation_formation = ?, datedebut_formation= ?, datefin_formation
-, cfp_ref_formation= ?, niveau_formation= ?, datedebut_examen_formation= ?, datefin_examen_formation= ?, id_site_formation= ?, id_site_secondaire= ?,
-id_parcours= ?, ID_SECTEUR_FORMATION = ? WHERE id_formation = ?");*/
-
     $nomAction = htmlspecialchars($values['intitule_formation']);
     $datevalidAction = htmlspecialchars($values['datevalidation_formation']);
     $datedebutAction = htmlspecialchars($values['datedebut_formation']);
