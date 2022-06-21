@@ -80,7 +80,7 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
         $sujet = "Modification de mot de passe";
         $headers[] = 'MIME-Version: 1.0';
         $headers[] = 'Content-type: text/html; charset=UTF-8';
-        $headers[] = 'From: camillemarante@gmail.com';
+        $headers[] = 'From: admingreta@gmail.com';
         //génération d'une chaine de façon aléatoire.
         $token = openssl_random_pseudo_bytes(16);
         //convertion de la chaine en representation hexadecimal.

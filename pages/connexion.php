@@ -6,8 +6,6 @@
   <div class="form">
 
       <form action="index.php?page=authentification" method="POST">
-          <!-- action = fichier qui enregistrera en bdd les valeurs saisies -->
-
           <img class="d-block mx-auto" src="public/img/logo-gretapdl.png" alt="logo">
 
           <!-- EMAIL -->
@@ -43,7 +41,7 @@
               }
           }
           </script>
-          
+          <!-- Message d'erreur de connexion -->
           <?php
                 if (isset($_SESSION["etatConnexion"]) && 
                 $_SESSION["etatConnexion"] == 0) {
@@ -64,8 +62,6 @@
                   </div>
               </div>
           </div>
-
-          <!-- Si incorrecte afficher message -->
 
           <div class="text-center">
 

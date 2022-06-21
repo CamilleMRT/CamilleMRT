@@ -58,15 +58,15 @@ function getAction($pdo, $id_action)
 }
 
 // UPDATE FICHE ACTION PARTIE 1
-function updateAction($pdoP, $values, $idP)
+function updateAction($pdoP, $values)
 {
-    // $stmt = $pdoP->prepare("UPDATE formations SET intitule_formation='', datevalidation_formation, datedebut_formation, datefin_formation
-    // , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, id_site_formation, id_site_secondaire,
-    // id_parcours, ID_SECTEUR_FORMATION VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+     $stmt = $pdoP->prepare("UPDATE formations SET intitule_formation='', datevalidation_formation, datedebut_formation, datefin_formation
+     , cfp_ref_formation, niveau_formation, datedebut_examen_formation, datefin_examen_formation, id_site_formation, id_site_secondaire,
+     id_parcours, ID_SECTEUR_FORMATION VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$stmt = $pdoP->prepare("UPDATE formations SET intitule_formation = ?, datevalidation_formation = ?, datedebut_formation= ?, datefin_formation
+/*$stmt = $pdoP->prepare("UPDATE formations SET intitule_formation = ?, datevalidation_formation = ?, datedebut_formation= ?, datefin_formation
 , cfp_ref_formation= ?, niveau_formation= ?, datedebut_examen_formation= ?, datefin_examen_formation= ?, id_site_formation= ?, id_site_secondaire= ?,
-id_parcours= ?, ID_SECTEUR_FORMATION = ? WHERE id_formation = ?");
+id_parcours= ?, ID_SECTEUR_FORMATION = ? WHERE id_formation = ?");*/
 
     $nomAction = htmlspecialchars($values['intitule_formation']);
     $datevalidAction = htmlspecialchars($values['datevalidation_formation']);
@@ -82,7 +82,7 @@ id_parcours= ?, ID_SECTEUR_FORMATION = ? WHERE id_formation = ?");
     $secteurAction = ($values['ID_SECTEUR_FORMATION']);
    // $modaliteAction = ($values['id_modalites_examen']);
     $stmt->execute([$nomAction, $datevalidAction, $datedebutAction, $datefinAction, $cfprefAction, $niveauAction, 
-        $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction, $idP]);
+        $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction]);
     // $id_action = $pdoP->lastInsertId();
     // return $id_action;
 }

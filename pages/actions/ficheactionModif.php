@@ -2,11 +2,9 @@
 include('functions/actions.php');
 include ('utils/db.php');
 
-//$action = getAction($pdo, $_GET['id_action']);
-
-    // si n° action existant alors possibilité de modifier une fiche action précise
-    $id_action = @$_GET['id_action'];
-    $action = getAction($pdo, $id_action);
+// si n° action existant alors possibilité de modifier une fiche action précise
+$id_action = @$_GET['id_action'];
+$action = getAction($pdo, $id_action);
 
 // MODIF ETAPE 1
 if(@$_POST['etape1']){

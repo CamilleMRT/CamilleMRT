@@ -1,27 +1,6 @@
 <?php
 include('functions/actions.php');
 include ('utils/db.php');
-
-//CONFIG BOUTON VALIDER POUR ENVOYER EN BDD PARTIE CFP + MAIL RESP PROD
-if(isset($_POST['etape1'])){
-    try {
-    $idFiche=createAction($pdo, $_POST);
-    $dest=getEmailResponsableSite($pdo, $_POST['id_site_formation']);
-        $sujet = "Compléter une fiche action";
-        $headers[] = 'MIME-Version: 1.0';
-        $headers[] = 'Content-type: text/html; charset=UTF-8';
-        $headers[] = 'From: camillemarante@gmail.com';
-        $message = '<h1>Compléter une nouvelle fiche action</h1>
-    <p>pour réinitialiser votre mot de passe, veuillez suivre ce lien : 
-    <a href="localhost/SITEGRETA-SECOURS2/index.php?page=ficheactionModif&id_action=' . $idFiche . '">lien</a></p>';
-        if (mail($dest, $sujet, utf8_decode($message), implode("\r\n", $headers))) {
-            echo "Une notification à bien été envoyée au responsable de production.";
-        }
-    } catch (PDOException $e) {
-    echo($e);
-    }
-}
-
 ?>
 
 <!-- FORMULAIRE FICHE ACTION -->
@@ -58,7 +37,7 @@ if(isset($_POST['etape1'])){
                             <option selected>Choix</option>
                             <?php 
                         $resultsSecteur=getlistSecteur($pdo);
-                                foreach ($resultsSecteur as $groupes_formation){
+                            foreach ($resultsSecteur as $groupes_formation){
                             ?>
 
                             <option value="<?php echo $groupes_formation["ID_SECTEUR_FORMATION"]?>">
@@ -259,8 +238,7 @@ if(isset($_POST['etape1'])){
             <!-- Boutons -->
             <div class="row justify-content-center">
                 <div class="m-3">
-                    <input type="submit" onclick='alert("Enregistrement et envoi au responsable de production")'
-                        name="etape1" class="btn btn-success" value="Valider">
+                    <input type="submit" onclick='alert("Enregistrement et envoi au responsable de production")' name="etape1" class="btn btn-success" value="Valider">
                 </div>
             </div>
 
@@ -304,8 +282,8 @@ if(isset($_POST['etape1'])){
                 <!-- Assistant de formation-->
                 <div class="col-sm-12 col-md-6">
                     <p class="text-left">Assistant(e) de formation
-                        <select <?=(isRespProd() || isAdmin() || isDirection()) ? '' : 'readonly' ?>
-                            name="assistant_form" class="form-control" required>
+                        <select <?=(isRespProd() || isAdmin() || isDirection()) ? '' : 'readonly' ?> name="assistant_form"
+                            class="form-control" required>
                             <option selected>Choix</option>
                             <?php
                         $resultsAssForm=getlistAssForm($pdo);
@@ -328,8 +306,7 @@ if(isset($_POST['etape1'])){
             <!-- Boutons -->
             <div class="row justify-content-center">
                 <div class="m-3">
-                    <button type="button" name="etape2" onclick='alert("Enregistrement et envoi au coordonnateur")'
-                        class="btn btn-success">Valider</button>
+                    <button type="button" name="etape2" onclick='alert("Enregistrement et envoi au coordonnateur")' class="btn btn-success">Valider</button>
                 </div>
             </div>
 
@@ -449,18 +426,17 @@ if(isset($_POST['etape1'])){
             <!-- SCRIPT JQUERY POUR DUPLIQUER LE FORMULAIRE -->
 
             <script>
-            $(function() {
-                $("#ajouter").on("click", function() {
-                    //ici tu sélectionnes ce que tu souhaites cloner par rapport au btn (this)
-                    var inter = $(this).closest("#listeinter").clone(true);
-                    // et la tu indiques l'emplacement du clone en gros
-                    $(this).closest("#listeinter").after(inter);
-                });
-            });
-            </script>
+    $(function () {
+      $("#ajouter").on("click", function () {
+        //ici tu sélectionnes ce que tu souhaites cloner par rapport au btn (this)
+        var inter = $(this).closest("#listeinter").clone(true);
+        // et la tu indiques l'emplacement du clone en gros
+        $(this).closest("#listeinter").after(inter);
+      });
+    }); 
+  </script>
 
-            <script>
-            /*
+            <script>/*
             $(document).ready(function() {
                 const nbchildren = $("#listeinter").children().length;
                 $("#ajouter").click(function(e) {

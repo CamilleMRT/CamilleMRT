@@ -11,8 +11,6 @@
     if (isset($_POST['supprimerAction'])){
         deleteAction($pdo, $_POST);
     }
-
-    
     ?>
 
     <!-- TITRE PAGE -->
