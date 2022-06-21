@@ -72,7 +72,7 @@ include ('utils/db.php');
                         <p class="text-left"> Date de validation de l'action par le Directeur
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php if(count($resultAction)>0) echo $resultAction['date_validation_formation'] ?>"
+                                value="<?php echo $resultAction['date_validation_formation'] ?>"
                                 name="datevalidation_formation" required />
                         </p>
                     </div>
@@ -82,7 +82,7 @@ include ('utils/db.php');
                         <p class="text-left"> Date de début de l'action
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php if(count($resultAction)>0) echo $resultAction['datedebut_formation'] ?>"
+                                value="<?php echo $resultAction['datedebut_formation'] ?>"
                                 name="datedebut_formation" required>
                         </p>
                     </div>
@@ -94,7 +94,7 @@ include ('utils/db.php');
                         <p class="text-left"> Date de fin de l'action
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php if(count($resultAction)>0) echo $resultAction['datefin_formation'] ?>"
+                                value="<?php echo $resultAction['datefin_formation'] ?>"
                                 name="datefin_formation" required />
                         </p>
                     </div>

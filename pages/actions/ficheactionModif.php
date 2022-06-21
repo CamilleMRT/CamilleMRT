@@ -124,7 +124,7 @@ if(@$_POST['etape3']){
                         <p class="text-left"> Date de début de l'action
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php if(count($action)>0) echo $action['datedebut_formation'] ?>"
+                                value="<?php echo $action['datedebut_formation'] ?>"
                                 name="datedebut_formation" value='<?php echo $action['datedebut_formation']?>'required>
                         </p>
                     </div>
@@ -136,7 +136,7 @@ if(@$_POST['etape3']){
                         <p class="text-left"> Date de fin de l'action
                             <input <?=(isCFP() || isAdmin() || isDirection()) ? '' : 'readonly' ?> type="date"
                                 class="form-control"
-                                value="<?php if(count($action)>0) echo $action['datefin_formation'] ?>"
+                                value="<?php $action['datefin_formation'] ?>"
                                 name="datefin_formation" value='<?php echo $action['datefin_formation']?>'required />
                         </p>
                     </div>
