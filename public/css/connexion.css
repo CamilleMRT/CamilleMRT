@@ -92,6 +92,12 @@
     .background .shape{
         display: none;
     }
+    .form{
+        border-radius: 0;
+        backdrop-filter: none;
+        box-shadow: none;
+
+    }
 
 } 
 

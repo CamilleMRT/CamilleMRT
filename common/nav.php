@@ -5,11 +5,11 @@ ob_start();
 
 ?>
 <!-- NAV LATERALE -->
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg">
     <a class="navbar-brand mb-0 h1" href="" index.php?page=accueil"><img class=logo src="./public/img/logo-gretapdl.png"
             alt="logo"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headNavigation">
-        <span class="navbar-toggler-icon burger_icon"></span>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#headNavigation">
+        <span class="navbar-toggler-icon burger_icon"><i class="fa-solid fa-bars"></i></span>
     </button>
     </div>
 </nav>
@@ -56,21 +56,20 @@ ob_start();
 </div>
 
 <!-- NAV MOBILE -->
-<nav class="navbar navbar-expand-lg navbar-dark d-none mobile_only">
-    <div class="collapse navbar-collapse" id="headNavigation">
-        <div class="side-navbar-header">
-            <a href="index.php?page=profil" class="profile"><i class="fas fa-user-circle"></i></a>
-            <h5>Bonjour <?php echo $_SESSION['prenom']?> !</h5>
-        </div>
-        <ul class="navbar-nav flex-column">
+<nav class="navbar navbar-toggle d-none mobile_only">
+    <div>
+        <ul class="mobile-navbar-nav">
             <li class="nav-link active">
-                <a class="home" href="index.php?page=accueil"><i class="fas fa-home"></i> Accueil</a>
+                <a class="home" href="index.php?page=accueil">Accueil</a>
             </li>
             <li class="nav-link">
-                <a href="index.php?page=formation"><i class="far fa-folder-open"></i> Formations</a>
+                <a href="index.php?page=profil">Mon profil</a>
             </li>
             <li class="nav-link">
-                <a href="index.php?page=reservation"><i class="fa-regular fa-calendar-days"></i> Réservations</a>
+                <a href="index.php?page=formation">Formations</a>
+            </li>
+            <li class="nav-link">
+                <a href="index.php?page=reservation">Réservations</a>
             </li>
             <?php if (isAdmin()) {?>
 
@@ -83,11 +82,10 @@ ob_start();
             </li>
             <?php } ?>
             <li class="nav-link">
-                <a class="help" href="index.php?page=aide"><i class="far fa-question-circle"></i> Aide</a>
+                <a class="help" href="index.php?page=aide">Aide</a>
             </li>
             <li class="nav-link">
-                <a class="deconnexion" href="index.php?page=connexion"><i
-                        class="fas fa-sign-out-alt"></i>Déconnexion</a>
+                <a class="link-danger" href="index.php?page=connexion">Déconnexion</a>
             </li>
         </ul>
     </div>
@@ -97,7 +95,7 @@ ob_start();
 var mobile = 1;
 $('.burger_icon').click(function() {
     if (mobile == 1) {
-        $(".mobile_only").addClass('d-block d-lg-none');
+        $(".mobile_only").addClass('d-block');
         mobile = 0;
     } else {
         setTimeout(function() {

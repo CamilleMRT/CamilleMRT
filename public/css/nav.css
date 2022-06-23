@@ -103,8 +103,28 @@ a.profile:hover{
       color:red;
   } 
 
-.navbar-toggler{
-    color: black !important;
+
+
+/* NAVBAR RESPONSIVE */
+
+.burger_icon i{
+    color: #323277;
+    font-size: 1.5em;
 }
 
+.mobile-navbar-nav{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
+    
+    }
+
+.mobile-navbar-nav i{
+    font-size: larger;
+}
+
+.mobile-navbar-nav ul, li, a{
+    text-decoration: none !important;
+    color: #323277 !important;
+}
