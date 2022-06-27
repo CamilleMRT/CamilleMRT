@@ -24,7 +24,7 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
         $delais = 10800; //3 heures
 
         if ($timeCourant - $timeToken > $delais) { //le délais est dépassé
-            echo "le délais pour changer votre mot de passe est dépassé. Veuillez refaire la demande.";
+            echo "le délai pour changer votre mot de passe est dépassé. Veuillez refaire la demande.";
         } else { //l'utilisateur peut saisir un nouveau mot de passe car jeton valide et délas non dépassé
             echo '<div class="container mt-3">
             
@@ -35,7 +35,7 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
 
         <div class="form-group col-6">
 
-        <input type="text" onchange="verifUser(\'' . $infosToken['id_util'] . '\')" name="email" id="email" class="form-control" placeholder="Identifiant" value="" required>
+        <input type="text" onchange="verifUser(\'' . $infosToken['id_util'] . '\')" name="email" id="email" class="form-control" placeholder="Identifiant" required>
 </div>
 
 <div class="form-group col-6">
@@ -97,4 +97,4 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
         }
     }
 } ?>
-<!--<script src="./public/js/mdpoublie.js"></script>-->
+<script src="./public/js/mdpoublie.js"></script>

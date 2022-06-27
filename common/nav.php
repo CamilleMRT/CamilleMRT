@@ -6,7 +6,7 @@ ob_start();
 ?>
 <!-- NAV LATERALE -->
 <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand mb-0 h1" href="" index.php?page=accueil"><img class=logo src="./public/img/logo-gretapdl.png"
+    <a class="navbar-brand mb-0 h1" href="index.php?page=accueil"><img class=logo src="./public/img/logo-gretapdl.png"
             alt="logo"></a>
     <button class="navbar-toggler" data-toggle="collapse" data-target="#headNavigation">
         <span class="navbar-toggler-icon burger_icon"><i class="fa-solid fa-bars"></i></span>

@@ -1,5 +1,5 @@
 //fonction qui vérifie que l'identifiant trouvé pour le token est le même que celui saisie par l'utilisateur
-function verifUser(elem, valMailToken) {
+function verifUser(valMailToken) {
     const valUser = $('#email').val();
     if (valMailToken != valUser) {
         alert("l'identifant saisi n'est pas celui de la demande!");
