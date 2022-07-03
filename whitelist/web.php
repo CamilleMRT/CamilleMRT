@@ -3,7 +3,7 @@
 if(isset($_SESSION["etatConnexion"]) && $_SESSION["etatConnexion"]==1) {
     //la connexion a été établie
    if(isAdmin()){
-        array_push($whitelist, 'accueil', 'profil', 'formation', 'reservation', 'aide','actions/ficheaction','actions/ficheactionModif','actions/ajoutreservation',
+        array_push($whitelist, 'accueil', 'profil', 'formation', 'reservation', 'aide','actions/ficheaction','actions/ficheactionModif',
         'admin/profilutil', 'admin/gestionresa');
     }    
     if(isDirection()){
@@ -31,3 +31,4 @@ if(isset($_SESSION["etatConnexion"]) && $_SESSION["etatConnexion"]==1) {
         array_push($whitelist, 'accueil', 'profil', 'formation', 'reservation', 'aide');
     }
 }
+

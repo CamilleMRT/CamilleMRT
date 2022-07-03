@@ -79,8 +79,8 @@ function updateAction($pdoP, $values)
    // $modaliteAction = ($values['id_modalites_examen']);
     $stmt->execute([$nomAction, $datevalidAction, $datedebutAction, $datefinAction, $cfprefAction, $niveauAction, 
         $datedebutexamAction, $datefinexamAction, $siteAction, $siteSecondaire, $parcoursAction, $secteurAction]);
-    // $id_action = $pdoP->lastInsertId();
-    // return $id_action;
+    $id_action = $pdoP->lastInsertId();
+    return $id_action;
 }
 
 // CREER FICHE ACTION PARTIE 2

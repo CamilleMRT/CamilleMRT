@@ -22,7 +22,7 @@ $dest=getEmailCoordo($pdo, $_POST['id_site_formation']);
     $headers[] = 'From: camillemarante@gmail.com';
     $message = '<h1>Compléter une nouvelle fiche action</h1>
 <p>Pour compléter la partie coordonnateur de la fiche action veuillez suivre ce lien : 
-<a href="localhost/SITEGRETA-SECOURS2/index.php?page=ficheactionModif&id_action=' . $idFiche . '">lien</a></p>';
+<a href="localhost/SITEGRETA/index.php?page=ficheactionModif&id_action=' . $idFiche . '">lien</a></p>';
     if (mail($dest, $sujet, utf8_decode($message), implode("\r\n", $headers))) {
     }
 } catch (PDOException $e) {

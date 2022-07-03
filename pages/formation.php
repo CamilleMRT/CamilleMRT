@@ -48,9 +48,8 @@
 
             <div class="container">
                 <div class="table-responsive mt-5">
-                    <div class="row col-md-12 col-md-offset-2 custyle">
+                    <div class="row col-md-12">
                         <table class="table table-hover table-sm text-center" id="listeformation">
-                            <caption>Liste des formations</caption>
                             <thead>
                                 <tr>
                                     <th>N° action</th>
@@ -65,8 +64,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-
                                 <?php
                                     foreach ($resultformation as $formation){
                                         echo "<tr>";
@@ -82,7 +79,6 @@
                                         <a href='#' class='btn btn-success btn-xs'><i class='far fa-eye'></i></a>
                                         <a class='btn btn-info btn-xs' href='index.php?page=actions/ficheactionModif&id_action=".$formation['id_formation']."'>
                                         <i class='far fa-edit'></i></a>
-
                                     <form method='POST' action='index.php?page=formation' value=".$formation['id_formation'].">
                                     <button type='submit' name='supprimerAction' class='btn btn-danger btn-xs'>
                                         <i class='far fa-trash-alt'></i></button>
@@ -90,7 +86,6 @@
                                 </td>
                                 </tr>";
                                     }
-                                    
                                     ?>
                             </tbody>
                         </table>
@@ -102,6 +97,9 @@
                 $('#listeformation').DataTable();
             });
             </script>
+
+
+
             <!-- CALENDRIER FORMATION GANTT -->
             <div class="card m-5" id="calendar">
                 <h5 class="titreform">Calendrier des Formations</h5>

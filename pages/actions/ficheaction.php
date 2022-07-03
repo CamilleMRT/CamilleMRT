@@ -1,10 +1,28 @@
 <?php
 include('functions/actions.php');
 include ('utils/db.php');
+
+if(@$_POST['etape1']){
+    createAction($pdo, $_POST);
+} 
+try {
+    $dest=getEmailResponsableSite($pdo, $_POST['id_site_formation']);
+        $sujet = "Compléter une fiche action";
+        $headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'Content-type: text/html; charset=UTF-8';
+        $headers[] = 'From: camillemarante@gmail.com';
+        $message = '<h1>Compléter une nouvelle fiche action</h1>
+    <p>Pour compléter la partie <b>responsable de production</b> de la fiche action veuillez suivre ce lien : 
+    <a href="localhost/SITEGRETA/index.php?page=ficheactionModif&id_action=' . $idFiche . '">lien</a></p>';
+        if (mail($dest, $sujet, utf8_decode($message), implode("\r\n", $headers))) {
+        }
+    } catch (PDOException $e) {
+    echo($e);
+    }
 ?>
 
 <!-- FORMULAIRE FICHE ACTION -->
-<main role="main" class="col-md-9 ml-sm-auto">
+<main role="main" class="col-md-12 col-sm-auto">
     <div class="card m-5 text-center bg-light">
         <div class="card-header" id="title">
             <h3>Créer une fiche action </h3>
@@ -238,10 +256,10 @@ include ('utils/db.php');
             <!-- Boutons -->
             <div class="row justify-content-center">
                 <div class="m-3">
-                    <input type="submit" onclick='alert("Enregistrement et envoi au responsable de production")' name="etape1" class="btn btn-success" value="Valider">
+                    <input type="submit" onclick='alert("Enregistrement et envoi au responsable de production")' 
+                    name="etape1" class="btn btn-success" value="Valider">
                 </div>
             </div>
-
     </div>
     <?php
         }
@@ -435,123 +453,6 @@ include ('utils/db.php');
       });
     }); 
   </script>
-
-            <script>/*
-            $(document).ready(function() {
-                const nbchildren = $("#listeinter").children().length;
-                $("#ajouter").click(function(e) {
-                    e.preventDefault();
-                    $("#listeinter").append(`       
-                   
-                    <!-- Nom de l'intervenant -->
-                    <div id="coordo${nbchildren+1}">
-
-                <div class="row m-2">
-                    <div class="col-sm-12 col-md-4 ">
-                        <p class="text-left"> Nom de l'intervenant(e)
-                            <select id="nomInter" name="??????" class="form-control" required>
-                                <option selected>Choix</option>
-                                <?php
-                            $resultsIntervenant=getlistInter($pdo);
-                            foreach ($resultsIntervenant as $intervenant){
-                                
-                                ?>
-                                <option value="<?php echo $intervenant["id_util"]?>">
-                                    <?php echo "{$intervenant['nom']} {$intervenant['prenom']}"?></option>
-                                <?php } ?>
-                            </select>
-                        </p>
-                    </div>
-                    <!-- Catégorie -->
-                    <div class="col-sm-12 col-md-4">
-                        <p class="text-left">Catégorie
-                            <select id="catInter" class="form-control" name="cat_intervenant" required>
-                                <option selected>Choix</option>
-                                <?php
-                            $resultsCatInter=getlistCatInter($pdo);
-                            foreach ($resultsCatInter as $catinter){
-    
-                            ?>
-                                <option value="<?php echo $catinter["ID_CAT_INTER"]?>">
-                                    <?php echo $catinter["cat_intervenant"]?></option>
-                                <?php } ?>
-                            </select>
-                        </p>
-                    </div>
-                    <!-- Type heures-->
-                    <div class="col-sm-12 col-md-4">
-                        <p class="text-left">Type heures
-                            <select class="form-control" id="heuresInter" name="type_heure_inter" required>
-                                <option selected>Choix</option>
-                                <?php
-                            $resultsHeuresInter=getlistType($pdo);
-                            foreach ($resultsHeuresInter as $typeHeure){
-                            ?>
-                                <option value="<?php echo $typeHeure["ID_TYPEHEURES_INTER"]?>">
-                                    <?php echo $typeHeure["type_heure_inter"]?></option>
-                                <?php } ?>
-                            </select>
-                        </p>
-                    </div>
-                </div>
-                <!-- Nature des heures -->
-                <div id="coordobis" class="row m-2">
-                    <div class="col-sm-12 col-md-4 ">
-                        <p class="text-left"> Nature des heures
-                            <input type="text" id="typeheuresInter" class="form-control" value="" name="" required>
-                        </p>
-                    </div>
-                    <!-- Nombre d'heures = à calculer automatiquement via le calendrier API -->
-                    <div class="col-sm-12 col-md-4 ">
-                        <p class="text-left"> Nombre d'heures
-                            <input type="number" class="form-control" id="nbheuresInter" placeholder="Calcul auto" readonly value=""
-                                name="" required>
-                        </p>
-                    </div>
-                    <!-- Tarif -->
-                    <div class="col-sm-12 col-md-4 ">
-                        <p class="text-left"> Tarif
-                            <input type="number" class="form-control" id="tarif" value="" name="">
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- Bouton ajouter ligne intervenant  -->
-            <div class="button text-center mt-3">
-                <button type="button" id="supprimer" class="btn btn-danger btn-sm">Supprimer</button>
-            </div>
-            </div>`)
-
-
-                });
-                $(document).on('click', '#supprimer', function() {
-                    const nbchildren = $("#listeinter").children().length;
-                    console.log($("#coordo" + nbchildren-1))
-                    $("#coordo" + nbchildren-1).remove();
-                    // $(row).remove();
-                });
-
-
-
-
-                // Requête AJAX pour insérer en BDD
-                $("#formcoordo").submit(function(e) {
-                    e.preventDefault();
-                    $("register-submit").val('Enregistrement...');
-                    $.ajax({
-                        url: 'functions/actions.php',
-                        method: 'post',
-                        data: $(this).serialize,
-                        success: function(response) {
-                            console.log(response);
-                        }
-                    })
-                });
-            });
-            */
-            </script>
-
-
 
             <!-- Commentaire -->
             <div class="row m-2">

@@ -16,10 +16,6 @@ function createUser($pdoP, $values){
 
 }
 
-if (@$_POST['creer']) {
-    createUser($pdo, $_POST);
-}
-
 // SELECTIONNER GROUPE UTILISATEUR
 
 function getlistUtil($pdoP)
@@ -38,22 +34,6 @@ function deleteUtil($pdoP)
 {
     $stmtDeleteUtil = $pdoP->prepare("DELETE FROM utilisateursgreta WHERE id_util=? limit 1");
     $stmtDeleteUtil->execute();
-    $resultDeleteUtil = $stmtDeleteUtil->fetchAll(PDO::FETCH_ASSOC);
+    $resultDeleteUtil = $stmtDeleteUtil->fetch(PDO::FETCH_ASSOC);
     return $resultDeleteUtil;
-}
-
-if (@$_GET['supprimer']) {
-    deleteUtil($pdo);
-}
-
-
-
-
-// SELECT SECTEUR FORMATION
-function getlistSecteur($pdoP)
-{
-    $stmtgroupes = $pdoP->prepare("SELECT * FROM secteur_formation");
-    $stmtgroupes->execute();
-    $resultsSecteur = $stmtgroupes->fetchAll(PDO::FETCH_ASSOC);
-    return $resultsSecteur;
 }

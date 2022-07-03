@@ -6,14 +6,8 @@ function changePwd($pdoP, $values){
     $idUtil = htmlspecialchars($values['id_util']);
     $pwd = htmlspecialchars(($values['pwd']));
     $pwdHash = htmlspecialchars($pwd, PASSWORD_DEFAULT);
-    $stmt->execute([$idUtil, $pwd, $pwdHash]);
+    $stmt->execute([$idUtil, $pwdHash]);
 }
-
-if (@$_POST['udpatepwd']) {
-    changePwd($pdo, $_POST);
-    echo "OK !!!!";
-}
-
 
 // GESTION DU MOT DE PASSE OUBLIE
 

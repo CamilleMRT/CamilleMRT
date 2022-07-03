@@ -79,10 +79,15 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" name="creer" tabindex="4" class="btn btn-success mt-4" value="Inscription">
+            <input type="submit" name="creer" tabindex="4" class="btn btn-success mt-4" onclick="validate()" value="Inscription">
         </div>
         </form>
     </div>
+    <?php
+    if (@$_POST['creer']) {
+        createUser($pdo, $_POST);
+    }
+    ?>
 
 
     <!-- SCRIPT VALIDATION FORMULAIRE -->
@@ -181,15 +186,20 @@
                                 <td><a class='btn btn-info btn-xs'
                                         href="index.php?page=admin/profilutil&id=<?= $utilisateurs['id_util'] ?>">
                                         <i class="far fa-edit"></i></a></td>
-                                <td><a class="btn btn-danger btn-xs" name="supprimer" 
+                                <td><a class="btn btn-danger btn-xs" name="supprimer" id="supprimer"
                                         onclick="suppression_utilisateur(<?= $utilisateurs['id_util'] ?>)">
                                         <i class="far fa-trash-alt"></i></a></td>
                             </tr>
                             <?php
                       }  
+
+                      if (@$_GET['supprimer']) {
+                        deleteUtil($pdo);
+                    }
                       ?>
                         </tbody>
                     </table>
+                    
                 </div>
             </div>
         </div>
@@ -205,7 +215,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#tableutil').DataTable({
         dom: 'Bfrtip',
-        buttons: [
+        buttons: [  
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     });

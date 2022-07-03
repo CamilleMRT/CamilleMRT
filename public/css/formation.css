@@ -12,11 +12,12 @@ main{
 }
 
 #btnCreate{
-    color: white;
+    color: white !important;
     background-color: var(--bleu) !important;
     transition: all 0.3s;
 }
 
 #btnCreate:hover{
     background-color: var(--lightblue) !important;
+    cursor: pointer;
 }

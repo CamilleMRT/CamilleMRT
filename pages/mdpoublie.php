@@ -3,7 +3,6 @@
 include('./utils/db.php');
 
 //chargement des fonctions liées à la manipulation des données utilisateur
-//include('./functions/utilisateurs.php');
 include('./functions/actionsGestionConnexion.php');
 
 if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son changement de mot de passe
@@ -47,7 +46,7 @@ if (isset($_POST['recovery-submit'])) { //CAS où l'utilisateur valid son change
 </div>
 
 <div class="form-group col-3">
-    <input type="submit" name="recovery-submit" id="recovery-submit" class="form-control btn-secondary" value="Changer le mot de passe">
+    <input type="submit" name="recovery-submit" id="recovery-submit" class="form-control btn-success" onclick="validate()" value="Changer le mot de passe">
 </div>
 </form>
 </div>
