@@ -12,7 +12,7 @@
   --color-ink: #2C2218;
   --color-ink-soft: #5C5142;
   --font-display: var(--font-league-spartant), Georgia, serif;
-  --font-body: var(--font-hanken), system-ui, sans-serif;
+  --font-body: var(--font-poppins), system-ui, sans-serif;
 }
 
 :root {
