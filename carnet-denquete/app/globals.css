@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Direction visuelle (brief §11). Roboto 400/500 only — jamais 700.
+   Roboto Mono + tabular-nums for every number. Two token levels for cycle
+   colours; dark mode inverts fill/ink from a single palette.
+--------------------------------------------------------------------------- */
+
+:root {
+  --page: #f0eeea; /* fond lin */
+  --surface: #fbfaf8;
+  --surface-alt: #ffffff;
+  --ink: #22201e;
+  --ink-soft: #6b6660;
+  --ink-faint: #a29c94;
+  --rule: #ddd8d1;
+  --accent: #17685b; /* teal — boutons pleins, texte accent */
+  --accent-tint: #dff0ec; /* fond de bandeau */
+  --accent-glow: #52b5a4; /* aplats et surbrillance uniquement, jamais du texte */
+
+  /* Cycle — fill = aplats, ink = texte/traits/bordures */
+  --menstruelle-fill: #e0778e;
+  --menstruelle-ink: #b34157;
+  --folliculaire-fill: #5fc08d;
+  --folliculaire-ink: #24714b;
+  --ovulatoire-fill: #e5b45f;
+  --ovulatoire-ink: #8a6210;
+  --luteale-fill: #8c93e5;
+  --luteale-ink: #5259b8;
+
+  --radius-control: 8px;
+  --radius-card: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #14171a;
+    --surface: #1d2226;
+    --surface-alt: #242a2f;
+    --ink: #e9edef;
+    --ink-soft: #98a3aa;
+    --ink-faint: #626e76;
+    --rule: #2b3238;
+    --accent: #52b5a4;
+    --accent-tint: #17332e;
+    /* In dark mode the two levels invert: fill becomes text, ink becomes aplat. */
+    --menstruelle-fill: #b34157;
+    --menstruelle-ink: #e0778e;
+    --folliculaire-fill: #24714b;
+    --folliculaire-ink: #5fc08d;
+    --ovulatoire-fill: #8a6210;
+    --ovulatoire-ink: #e5b45f;
+    --luteale-fill: #5259b8;
+    --luteale-ink: #8c93e5;
+  }
+}
+
+/* Manual override wins over the media query, both directions. */
+:root[data-theme="light"] {
+  --page: #f0eeea; --surface: #fbfaf8; --surface-alt: #ffffff;
+  --ink: #22201e; --ink-soft: #6b6660; --ink-faint: #a29c94;
+  --rule: #ddd8d1; --accent: #17685b; --accent-tint: #dff0ec; --accent-glow: #52b5a4;
+  --menstruelle-fill: #e0778e; --menstruelle-ink: #b34157;
+  --folliculaire-fill: #5fc08d; --folliculaire-ink: #24714b;
+  --ovulatoire-fill: #e5b45f; --ovulatoire-ink: #8a6210;
+  --luteale-fill: #8c93e5; --luteale-ink: #5259b8;
+}
+:root[data-theme="dark"] {
+  --page: #14171a; --surface: #1d2226; --surface-alt: #242a2f;
+  --ink: #e9edef; --ink-soft: #98a3aa; --ink-faint: #626e76;
+  --rule: #2b3238; --accent: #52b5a4; --accent-tint: #17332e; --accent-glow: #52b5a4;
+  --menstruelle-fill: #b34157; --menstruelle-ink: #e0778e;
+  --folliculaire-fill: #24714b; --folliculaire-ink: #5fc08d;
+  --ovulatoire-fill: #8a6210; --ovulatoire-ink: #e5b45f;
+  --luteale-fill: #5259b8; --luteale-ink: #8c93e5;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-tint: var(--accent-tint);
+  --color-accent-glow: var(--accent-glow);
+}
+
+html {
+  background: var(--page);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-roboto), system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.5;
+  background: var(--page);
+  color: var(--ink);
+  min-height: 100dvh;
+}
+
+/* Never 700. */
+b, strong, h1, h2, h3 { font-weight: 500; }
+
+h1 { font-size: 22px; }
+h2 { font-size: 18px; }
+h3 { font-size: 16px; }
+small, .caption { font-size: 12px; color: var(--ink-soft); }
+
+/* Roboto Mono + tabular-nums on every number. */
+.num {
+  font-family: var(--font-roboto-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+button { font-family: inherit; }
+
+/* Visible keyboard focus. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
