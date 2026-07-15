@@ -1,0 +1,65 @@
+// Carnet d'enquête — data model.
+//
+// Single user, no auth (protected by APP_SECRET). Offline-first: the client is
+// the source of truth (localStorage), and this schema mirrors it for optional
+// server sync + Web Push. The model deliberately EXPOSES cycle phases and
+// protocol phases cleanly so a v2 recipe engine can plug in without a rewrite —
+// but v2 features (recipes, meal engine, FODMAP lexicon) are NOT modelled here.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// One row: the single user's protocol configuration.
+model Config {
+  id                String   @id @default("singleton")
+  startDate         DateTime // Horloge A start (default 2026-07-14)
+  cycleReferenceJ1  DateTime // Horloge B reference (default 2026-07-07)
+  stopAfterPhase1   Boolean? // point de sortie decision (null = not asked yet)
+  darkMode          String   @default("system")
+  updatedAt         DateTime @updatedAt
+}
+
+// One row per calendar day that has any data.
+model DayRecord {
+  date      String   @id // "YYYY-MM-DD"
+  paused    Boolean  @default(false) // pauses stop Horloge A only
+  habits    Json     @default("{}") // { habitId: boolean }
+  // Journal — the VERROUILLÉ 4-field set. Never add or remove a column here.
+  bloating  Int? // 0-5
+  energy    Int? // 0-5
+  anxiety   Int? // 0-5
+  stool     Boolean?
+  updatedAt DateTime @updatedAt
+}
+
+// Horloge B events: every recorded J1 ("Mes règles ont commencé aujourd'hui").
+model CycleStart {
+  date String @id // "YYYY-MM-DD"
+}
+
+// Paliers the user accepted to halve (offered after 2 failed attempts).
+model HalvedPalier {
+  palier Int @id // 1..4
+}
+
+// Web Push subscription (single user → at most a handful of devices).
+model PushSubscription {
+  endpoint  String   @id
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+}
+
+// Bookkeeping for the 3-consecutive-failures .ics fallback banner.
+model PushHealth {
+  id                  String    @id @default("singleton")
+  lastSuccessDate     String?
+  consecutiveFailures Int       @default(0)
+  updatedAt           DateTime  @updatedAt
+}
